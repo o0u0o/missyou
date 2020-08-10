@@ -1,0 +1,14 @@
+server.port=8081
+
+spring.http.encoding.charset=utf-8
+spring.http.encoding.enabled=true
+spring.http.encoding.force=true
+hero.name=camille
+hero.condition= diana
+#  condition: irelia
+
+mysql.ip = 127.0.0.1
+mysql.port=3309
+
+# \u6307\u5B9Aapi \u662F\u6240\u6709controller\u7684\u6839\u5305
+missyou.api-package = com.o0u0o.missyou.api
