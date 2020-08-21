@@ -5,8 +5,6 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
-import java.sql.Timestamp;
-import java.util.Objects;
 
 /**
  * @ClassName Sku
@@ -25,11 +23,13 @@ public class Sku extends BaseEntity{
     @GeneratedValue(strategy =  GenerationType.IDENTITY)
     private Long id;
 
+    /** 价格 */
     private BigDecimal price;
 
     /** 折扣价 */
     private BigDecimal discountPrice;
 
+    /** 上下架 */
     private Boolean online;
 
     /** 图片 */
@@ -39,15 +39,16 @@ public class Sku extends BaseEntity{
 
     private Long spuId;
 
-
     /** 分类ID */
     private Long categoryId;
 
     /** 父分类ID */
     private Long rootCategoryId;
 
+    /** 规格相关参数 */
     private String specs;
 
+    /** SKU的唯一标识 用于简化前端计算 */
     private String code;
 
     /** 库存量 */

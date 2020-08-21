@@ -1,7 +1,5 @@
 package com.o0u0o.missyou.api.v1;
 
-import com.github.dozermapper.core.DozerBeanMapperBuilder;
-import com.github.dozermapper.core.Mapper;
 import com.o0u0o.missyou.bo.PageCounter;
 import com.o0u0o.missyou.core.http.NotFoundException;
 import com.o0u0o.missyou.model.Spu;
@@ -15,8 +13,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.Positive;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @ClassName SpuController
@@ -60,13 +56,16 @@ public class SpuController {
 
     /**
      * 根据分类ID查询
-     * @param
-     * @return: 
+     * @param id
+     * @param isRoot 是否是根节点
+     * @param start 开始
+     * @param count 数量
+     * @return:
      * @author: ChuanGui.Yue
      * @date: 2020/8/2 下午3:32
      */
     @GetMapping("/by/category/{id}")
-    public PagingDozer<Spu, SpuSimplifyVO> getByCategoryId(@PathVariable(name = "id") @Positive Long id,
+    public PagingDozer<Spu, SpuSimplifyVO> getByCategoryId(@PathVariable @Positive Long id,
                                                            @RequestParam(name = "is_root", defaultValue = "false") Boolean isRoot,
                                                            @RequestParam(name = "start", defaultValue = "0") Integer start,
                                                            @RequestParam(name = "count", defaultValue = "10") Integer count){

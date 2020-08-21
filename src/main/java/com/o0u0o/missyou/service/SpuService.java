@@ -18,5 +18,13 @@ public interface SpuService {
 
     Spu getSpu(Long id);
 
+    /**
+     * 根据分类获取
+     * @param cid
+     * @param isRoot
+     * @param pageNum
+     * @param PageSize
+     * @return
+     */
     Page<Spu> getByCategory(Long cid, Boolean isRoot, Integer pageNum, Integer PageSize);
 }
