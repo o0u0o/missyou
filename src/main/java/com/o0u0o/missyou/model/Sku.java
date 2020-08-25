@@ -5,6 +5,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.util.List;
 
 /**
  * @ClassName Sku
@@ -46,6 +47,7 @@ public class Sku extends BaseEntity{
     private Long rootCategoryId;
 
     /** 规格相关参数 */
+//    private List<Spec> specs;
     private String specs;
 
     /** SKU的唯一标识 用于简化前端计算 */
@@ -53,4 +55,9 @@ public class Sku extends BaseEntity{
 
     /** 库存量 */
     private Long stock;
+
+//    public List<Spec> getSpecs(){
+//        String specs = this.specs;
+//        return null;
+//    }
 }
