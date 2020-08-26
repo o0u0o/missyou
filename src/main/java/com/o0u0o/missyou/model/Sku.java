@@ -6,6 +6,7 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @ClassName Sku
@@ -49,6 +50,8 @@ public class Sku extends BaseEntity{
     /** 规格相关参数 */
 //    private List<Spec> specs;
     private String specs;
+
+    private Map<String, Object> test;
 
     /** SKU的唯一标识 用于简化前端计算 */
     private String code;
