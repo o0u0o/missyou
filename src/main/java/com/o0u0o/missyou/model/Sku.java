@@ -51,6 +51,8 @@ public class Sku extends BaseEntity{
 //    private List<Spec> specs;
     private String specs;
 
+    /** 转换器 */
+    @Convert(converter = MapAndJson.class)
     private Map<String, Object> test;
 
     /** SKU的唯一标识 用于简化前端计算 */

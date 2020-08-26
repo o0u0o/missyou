@@ -6,6 +6,7 @@ import com.o0u0o.missyou.core.http.ServerErrorException;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.persistence.AttributeConverter;
+import javax.persistence.Converter;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -17,6 +18,7 @@ import java.util.Map;
  * @Descripton: 描述xx类
  * @Version: v0.0.1
  **/
+@Converter
 public class MapAndJson implements AttributeConverter<Map<String, Object>, String> {
 
     @Autowired
