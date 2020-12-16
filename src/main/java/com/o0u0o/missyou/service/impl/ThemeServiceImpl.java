@@ -33,6 +33,7 @@ public class ThemeServiceImpl implements ThemeService {
      * @param name
      * @return
      */
+    @Override
     public Optional<Theme> findByName(String name){
         return themeRepository.findByName(name);
     }
