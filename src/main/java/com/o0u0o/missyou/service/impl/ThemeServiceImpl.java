@@ -28,6 +28,11 @@ public class ThemeServiceImpl implements ThemeService {
         return themeRepository.findByNames(names);
     }
 
+    /**
+     * Optional关键字作用：用于解决空指针异常
+     * @param name
+     * @return
+     */
     public Optional<Theme> findByName(String name){
         return themeRepository.findByName(name);
     }
