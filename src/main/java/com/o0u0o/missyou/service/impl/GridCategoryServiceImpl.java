@@ -15,7 +15,7 @@ public class GridCategoryServiceImpl implements GridCategoryService {
     GridCategoryRepository gridCategoryRepository;
 
     @Override
-    public List<GridCategory> getGaidCategoryList() {
+    public List<GridCategory> getGridCategoryList() {
         return gridCategoryRepository.findAll();
     }
 }

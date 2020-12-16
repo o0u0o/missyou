@@ -6,5 +6,5 @@ import java.util.List;
 
 public interface GridCategoryService {
 
-    List<GridCategory> getGaidCategoryList();
+    List<GridCategory> getGridCategoryList();
 }
