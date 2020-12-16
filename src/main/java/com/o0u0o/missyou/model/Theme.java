@@ -8,8 +8,7 @@ import javax.persistence.*;
 import java.util.List;
 
 /**
- * TODO
- *
+ * 主题
  * @author mac
  * @date 2020/11/10 8:47 下午
  */
@@ -30,7 +29,7 @@ public class Theme extends BaseEntity {
     private String online;
     private String titleImg;
 
-    /** 模板名称 */
+    /** 模板名称(前端复用模板需要) */
     private String tplName;
 
     @ManyToMany(fetch = FetchType.LAZY)
