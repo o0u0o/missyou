@@ -1,4 +1,4 @@
-package com.o0u0o.missyou.common.emun;
+package com.o0u0o.missyou.common.emun.status;
 
 import lombok.Getter;
 import org.springframework.web.bind.annotation.GetMapping;

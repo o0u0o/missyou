@@ -1,4 +1,4 @@
-package com.o0u0o.missyou.validators;
+package com.o0u0o.missyou.dto.validators;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;
@@ -17,7 +17,7 @@ public @interface PasswordEqual {
     int max() default 16;
 
     /** 消息 */
-    String message() default "passwords are not equal";
+    String message() default "字段不符合要求";
 
 
     //2、需要加入两个模版方法 规范需要加入这两个

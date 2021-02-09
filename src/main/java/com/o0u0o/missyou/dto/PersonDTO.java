@@ -1,11 +1,9 @@
 package com.o0u0o.missyou.dto;
 
-import com.o0u0o.missyou.validators.PasswordEqual;
+import com.o0u0o.missyou.dto.validators.PasswordEqual;
 import lombok.*;
 import org.hibernate.validator.constraints.Length;
-import org.hibernate.validator.constraints.Range;
 
-import javax.validation.Valid;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 

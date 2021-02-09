@@ -1,4 +1,4 @@
-package com.o0u0o.missyou.validators;
+package com.o0u0o.missyou.dto.validators;
 
 import com.o0u0o.missyou.dto.PersonDTO;
 
