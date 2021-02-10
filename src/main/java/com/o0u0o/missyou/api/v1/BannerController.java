@@ -1,6 +1,7 @@
 package com.o0u0o.missyou.api.v1;
 
 import com.o0u0o.missyou.core.http.NotFoundException;
+import com.o0u0o.missyou.core.interceptors.annotation.ScopeLevel;
 import com.o0u0o.missyou.model.Banner;
 import com.o0u0o.missyou.service.BannerService;
 import com.o0u0o.missyou.core.http.ForbiddenException;
@@ -59,6 +60,7 @@ public class BannerController {
      * @return
      */
     @GetMapping("/name/{name}")
+    @ScopeLevel()
     public Banner getByName(@PathVariable @NotBlank String name){
         Banner banner = bannerService.getByName(name);
         if (banner == null){

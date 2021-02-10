@@ -66,7 +66,7 @@ public class JwtToken {
      * @param token
      * @return
      */
-    public Optional<Map<String, Claim>> getClaims(String token){
+    public static Optional<Map<String, Claim>> getClaims(String token){
         DecodedJWT decodedJWT;
         Algorithm algorithm = Algorithm.HMAC256(JwtToken.jwtKey);
         //解析token

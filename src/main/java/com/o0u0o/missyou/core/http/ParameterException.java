@@ -1,7 +1,5 @@
 package com.o0u0o.missyou.core.http;
 
-import org.springframework.http.HttpStatus;
-
 /**
  * @ClassName ParameterException
  * @Author o0u0o
