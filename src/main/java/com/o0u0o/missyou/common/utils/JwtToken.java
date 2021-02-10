@@ -4,6 +4,7 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -18,11 +19,15 @@ import java.util.Map;
  * @Descripton: 描述xx类
  * @Version: v0.0.1
  **/
+@Component
 public class JwtToken {
 
     private static String jwtKey;
 
     private static Integer expiredTimeIn;
+
+    /** 默认等级为8 */
+    private static Integer defaultScope = 8;
 
     @Value("${missyou.security.jwt-key}")
     private void setJwtKey(String jwtKey){
@@ -32,6 +37,15 @@ public class JwtToken {
     @Value("${missyou.security.token-expried-in}")
     private void setExpiredTimeIn(Integer expiredTimeIn){
         JwtToken.expiredTimeIn = expiredTimeIn;
+    }
+
+    /**
+     * 生成token
+     * @param uid 用户id
+     * @return
+     */
+    public static String makeToken(Long uid){
+        return JwtToken.getToken(uid, defaultScope);
     }
 
     /**

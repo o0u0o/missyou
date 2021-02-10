@@ -2,6 +2,7 @@ package com.o0u0o.missyou.service.impl;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.o0u0o.missyou.common.utils.JwtToken;
 import com.o0u0o.missyou.core.http.ParameterException;
 import com.o0u0o.missyou.model.User;
 import com.o0u0o.missyou.repository.UserRepository;
@@ -92,8 +93,8 @@ public class WxAuthenticationServiceImpl implements WxAuthenticationService {
         //2、使用openid查询是否注册 如果未注册，写入数在颁布令牌
         Optional<User> userOptional = this.userRepository.findByOpenid(openid);
         if (userOptional.isPresent()){
-            //TODO 返回jwt令牌
-            return  "";
+            //返回jwt令牌 小程序用户都是同一个scope 数字等级
+            return JwtToken.makeToken(userOptional.get().getId());
         }
 
         //2.2 如果不存在 先新注册用户 在返回jwt令牌
@@ -101,7 +102,8 @@ public class WxAuthenticationServiceImpl implements WxAuthenticationService {
                 .openid(openid)
                 .build();
         userRepository.save(user);
-        //todo  返回JWT令牌
-        return "";
+        Long uid = user.getId();
+        //返回JWT令牌
+        return JwtToken.makeToken(uid);
     }
 }

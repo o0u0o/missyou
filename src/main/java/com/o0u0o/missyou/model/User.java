@@ -18,7 +18,7 @@ public class User extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
     /** 微信openid */
     private String openid;
@@ -39,7 +39,7 @@ public class User extends BaseEntity {
     private String mobile;
 
     /**  用户组 青铜、砖石... */
-    private String group;
+//    private String group;
 
     /** 优惠券 */
     //private List<Coupon> couponList;

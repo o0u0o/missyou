@@ -21,6 +21,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     User findFirstById(Long id);
 
-    User findbyUnifyUid(String uuid);
+    User findByUnifyUid(String uuid);
 
 }
