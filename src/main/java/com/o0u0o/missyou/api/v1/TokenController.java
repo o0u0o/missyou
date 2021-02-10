@@ -1,13 +1,18 @@
 package com.o0u0o.missyou.api.v1;
 
 
+import com.o0u0o.missyou.core.enumeration.LoginType;
+import com.o0u0o.missyou.core.http.NotFoundException;
 import com.o0u0o.missyou.dto.TokenGetDTO;
+import com.o0u0o.missyou.service.WxAuthenticationService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -22,10 +27,22 @@ import java.util.Map;
 @RestController
 public class TokenController {
 
-    @PostMapping("getToken")
-    public Map<String, String> getToken(@RequestBody @Validated TokenGetDTO userData){
-        switch ("123"){
+    @Autowired
+    private WxAuthenticationService wxAuthenticationService;
 
+    @PostMapping("")
+    public Map<String, String> getToken(@RequestBody @Validated TokenGetDTO userData){
+        Map<Object, Object> map = new HashMap<>();
+        String token = null;
+        //登录类型
+        switch (userData.getType()){
+            case USER_WX:
+                wxAuthenticationService.code2Session(userData.getAccount());
+                break;
+            case USER_EMAIL:
+                break;
+            default:
+                throw new NotFoundException(10003);
         }
         return null;
     }

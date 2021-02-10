@@ -32,6 +32,6 @@ public class TokenPasswordValidator implements ConstraintValidator<TokenPassword
             //如果是小程序登录方式，可以没有密码
             return true;
         }
-        return false;
+        return s.length() >= this.min && s.length() <= this.max;
     }
 }
