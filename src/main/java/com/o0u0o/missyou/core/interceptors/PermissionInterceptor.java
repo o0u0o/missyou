@@ -13,7 +13,6 @@ import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
@@ -83,6 +82,7 @@ public class PermissionInterceptor extends HandlerInterceptorAdapter {
 
     /**
      * 获取scope等级
+     * 合理使用Optional处理空指针
      * @param handler
      * @return
      */
@@ -91,6 +91,9 @@ public class PermissionInterceptor extends HandlerInterceptorAdapter {
             HandlerMethod handlerMethod = (HandlerMethod)handler;
             //获取注解
             ScopeLevel scopeLevel = handlerMethod.getMethod().getAnnotation(ScopeLevel.class);
+            if (scopeLevel == null){
+                return Optional.empty();
+            }
             return Optional.of(scopeLevel);
         }
         return Optional.empty();
@@ -114,7 +117,12 @@ public class PermissionInterceptor extends HandlerInterceptorAdapter {
             throw new UnAuthenticatedException(10004);
         }
         //提取jwt令牌
-        String token = bearerToken.split(" ")[1];
+        String tokens[] = bearerToken.split(" ");
+        //数组下标越界
+        if (!(tokens.length == 2)){
+            throw new UnAuthenticatedException(10004);
+        }
+        String token = tokens[1];
         return token;
     }
 
