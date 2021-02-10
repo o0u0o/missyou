@@ -1,15 +1,17 @@
 package com.o0u0o.missyou.common.utils;
 
 import com.auth0.jwt.JWT;
+import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.exceptions.JWTVerificationException;
+import com.auth0.jwt.interfaces.Claim;
+import com.auth0.jwt.interfaces.DecodedJWT;
+import com.auth0.jwt.interfaces.Verification;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @ClassName CommonUtil
@@ -24,6 +26,7 @@ public class JwtToken {
 
     private static String jwtKey;
 
+    /** 过期时间 */
     private static Integer expiredTimeIn;
 
     /** 默认等级为8 */
@@ -59,6 +62,25 @@ public class JwtToken {
     }
 
     /**
+     * 校验令牌
+     * @param token
+     * @return
+     */
+    public Optional<Map<String, Claim>> getClaims(String token){
+        DecodedJWT decodedJWT;
+        Algorithm algorithm = Algorithm.HMAC256(JwtToken.jwtKey);
+        //解析token
+        JWTVerifier jwtVerifier = JWT.require(algorithm).build();
+        try {
+            decodedJWT = jwtVerifier.verify(token);
+        } catch (JWTVerificationException e){
+            //没必要记录日志
+            return Optional.empty();
+        }
+        return Optional.of(decodedJWT.getClaims());
+    }
+
+    /**
      * 获取jwt令牌
      * www.jwt.io
      * 1、生产jwt常用两个库 jjwt库(中文资料多) auth0库(安全的产品多)
@@ -70,7 +92,7 @@ public class JwtToken {
      */
     private static String getToken(Long uid, int scope){
         //1、生成令牌
-        //1.1 选择一种算法: secret-随机字符串(盐)
+        //1.1 选择一种算法: secret-随机字符串(盐) 相当于钥匙
         Algorithm algorithm = Algorithm.HMAC256(JwtToken.jwtKey);
 
         Map<String, Date> map = JwtToken.calculateExpiredIssues();
