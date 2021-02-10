@@ -3,6 +3,8 @@ package com.o0u0o.missyou.service.impl;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.o0u0o.missyou.core.http.ParameterException;
+import com.o0u0o.missyou.model.User;
+import com.o0u0o.missyou.repository.UserRepository;
 import com.o0u0o.missyou.service.WxAuthenticationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -10,7 +12,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.text.MessageFormat;
+import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * @ClassName WxAuthenticationServiceImpl
@@ -25,6 +29,9 @@ public class WxAuthenticationServiceImpl implements WxAuthenticationService {
 
     @Autowired
     private ObjectMapper mapper;
+
+    @Autowired
+    private UserRepository userRepository;
 
     @Value("${wx.code2session-url}")
     private String code2SessionUrl;
@@ -56,16 +63,17 @@ public class WxAuthenticationServiceImpl implements WxAuthenticationService {
         String sessionText = rest.getForObject(url, String.class);
 
         //2.3 反序列化为Map类型得到openid
+        Map<String, Object> session = new HashMap<>();
         try {
             //使用jackson将字符串类型反序列化为Map类型
-            Map<String, Object> session = mapper.readValue(sessionText, Map.class);
+            session = mapper.readValue(sessionText, Map.class);
         } catch (JsonProcessingException e) {
             //TODO 2.4 容错处理(对每个错误码作出反应)
             e.printStackTrace();
         }
 
         //2、颁布令牌并返回
-        return null;
+        return this.registerUser(session);
     }
 
     /**
@@ -80,6 +88,20 @@ public class WxAuthenticationServiceImpl implements WxAuthenticationService {
             //1.2 抛出参数异常
             throw new ParameterException(20004);
         }
-        return null;
+
+        //2、使用openid查询是否注册 如果未注册，写入数在颁布令牌
+        Optional<User> userOptional = this.userRepository.findByOpenid(openid);
+        if (userOptional.isPresent()){
+            //TODO 返回jwt令牌
+            return  "";
+        }
+
+        //2.2 如果不存在 先新注册用户 在返回jwt令牌
+        User user = User.builder()
+                .openid(openid)
+                .build();
+        userRepository.save(user);
+        //todo  返回JWT令牌
+        return "";
     }
 }

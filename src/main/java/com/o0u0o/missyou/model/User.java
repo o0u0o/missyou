@@ -26,6 +26,7 @@ public class User extends BaseEntity {
     /** 昵称 */
     private String nickname;
 
+    /** 微信uniid */
     private Integer unifyUid;
 
     /** 电子邮箱 */
@@ -36,6 +37,12 @@ public class User extends BaseEntity {
 
     /** 电话号 */
     private String mobile;
+
+    /**  用户组 青铜、砖石... */
+    private String group;
+
+    /** 优惠券 */
+    //private List<Coupon> couponList;
 
     /** 用户微信资料 */
     @Convert(converter = MapAndJson.class)

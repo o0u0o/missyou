@@ -2,7 +2,7 @@
 //
 //import com.fasterxml.jackson.annotation.JsonIgnore;
 //import com.o0u0o.missyou.core.enumeration.OrderStatus;
-//import com.o0u0o.missyou.util.CommonUtil;
+//import com.o0u0o.missyou.common.utils.CommonUtil;
 //import lombok.*;
 //import org.hibernate.annotations.Where;
 //

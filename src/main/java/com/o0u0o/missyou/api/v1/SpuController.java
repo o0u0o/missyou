@@ -4,7 +4,7 @@ import com.o0u0o.missyou.bo.PageCounter;
 import com.o0u0o.missyou.core.http.NotFoundException;
 import com.o0u0o.missyou.model.Spu;
 import com.o0u0o.missyou.service.SpuService;
-import com.o0u0o.missyou.util.CommonUtil;
+import com.o0u0o.missyou.common.utils.CommonUtil;
 import com.o0u0o.missyou.vo.PagingDozer;
 import com.o0u0o.missyou.vo.SpuSimplifyVO;
 import org.springframework.beans.BeanUtils;

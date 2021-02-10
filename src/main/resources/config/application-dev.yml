@@ -11,3 +11,10 @@ spring:
       hibernate:
         show_sql: true
         format_sql: true
+
+missyou:
+  security:
+    # 盐
+    jwt-key: 2333333yue
+    # 令牌过期时间
+    token-expried-in: 86400000
