@@ -32,6 +32,8 @@ public class JwtToken {
     /** 默认等级为8 */
     private static Integer defaultScope = 8;
 
+
+
     @Value("${missyou.security.jwt-key}")
     private void setJwtKey(String jwtKey){
         JwtToken.jwtKey = jwtKey;
@@ -78,6 +80,23 @@ public class JwtToken {
             return Optional.empty();
         }
         return Optional.of(decodedJWT.getClaims());
+    }
+
+    /**
+     * 验证Token
+     * @param token
+     * @return
+     */
+    public static Boolean verifyToken(String token) {
+        try {
+            Algorithm algorithm = Algorithm.HMAC256(JwtToken.jwtKey);
+            JWTVerifier verifier = JWT.require(algorithm).build();
+            verifier.verify(token);
+        } catch (JWTVerificationException e){
+            //不合法返回false
+            return false;
+        }
+        return true;
     }
 
     /**

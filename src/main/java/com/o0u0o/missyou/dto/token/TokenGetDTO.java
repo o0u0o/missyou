@@ -1,4 +1,4 @@
-package com.o0u0o.missyou.dto;
+package com.o0u0o.missyou.dto.token;
 
 import com.o0u0o.missyou.core.enumeration.LoginType;
 import com.o0u0o.missyou.dto.validators.TokenPassword;

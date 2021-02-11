@@ -1,7 +1,7 @@
 package com.o0u0o.missyou.service;
 
 
-import com.o0u0o.missyou.dto.TokenGetDTO;
+import com.o0u0o.missyou.dto.token.TokenGetDTO;
 
 /**
  * @ClassName AuthenticationService

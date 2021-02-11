@@ -1,6 +1,6 @@
 package com.o0u0o.missyou.service.impl;
 
-import com.o0u0o.missyou.dto.TokenGetDTO;
+import com.o0u0o.missyou.dto.token.TokenGetDTO;
 import com.o0u0o.missyou.service.AuthenticationService;
 import org.springframework.stereotype.Service;
 
