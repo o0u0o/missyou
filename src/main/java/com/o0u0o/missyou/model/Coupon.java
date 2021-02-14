@@ -5,12 +5,15 @@ import lombok.Setter;
 import org.hibernate.annotations.Where;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 /**
- * @ClassName UserCoupon
+ * @ClassName Coupon
  * @Author o0u0o
  * @UpdateUser o0u0o
  * @Date 2021/2/11 下午4:07
@@ -22,6 +25,7 @@ import java.util.Date;
 @Setter
 @Where(clause = "delete_time is null")
 public class Coupon extends BaseEntity {
+
     /** 优惠券主键ID */
     @Id
     private Integer id;
@@ -58,5 +62,8 @@ public class Coupon extends BaseEntity {
 
     /** 优惠券类型：1. 满减券 2.折扣券 3.无门槛券 4.满金额折扣券 */
     private Short type;
+
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "couponList")
+    private List<Category> categoryList;
 }
 

@@ -10,11 +10,11 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * @ClassName BannerEntity
+ * @ClassName Banner
  * @Author aiuiot
  * @UpdateUser aiuiot
  * @Date 2020/7/27 下午10:20
- * @Descripton: 描述xx类
+ * @Descripton: 轮播实体类
  * @Version: v0.0.1
  **/
 @Getter
