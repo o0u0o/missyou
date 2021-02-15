@@ -16,6 +16,7 @@ import java.util.List;
  * @Descripton: 活动实体
  * @Version: v0.0.1
  **/
+
 @Entity
 @Getter
 @Setter

@@ -1,6 +1,8 @@
 package com.o0u0o.missyou.service;
 
 
+import com.o0u0o.missyou.model.Activity;
+
 /**
  * @ClassName ActivityService
  * @Author o0u0o
@@ -10,4 +12,6 @@ package com.o0u0o.missyou.service;
  * @Version: v0.0.1
  **/
 public interface ActivityService {
+
+    Activity getByName(String name);
 }
