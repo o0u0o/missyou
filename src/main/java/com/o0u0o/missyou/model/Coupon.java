@@ -28,10 +28,10 @@ public class Coupon extends BaseEntity {
 
     /** 优惠券主键ID */
     @Id
-    private Integer id;
+    private Long id;
 
     /** 活动ID */
-    private Integer activityId;
+    private Long activityId;
 
     /** 优惠券标题 */
     private String title;

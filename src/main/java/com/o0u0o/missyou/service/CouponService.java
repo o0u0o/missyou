@@ -30,7 +30,7 @@ public interface CouponService {
     /**
      * 领取一张优惠券
      * @param uid 用户id
-     * @param cid 优惠券id
+     * @param couponId 优惠券id
      */
-    void collectOneCoupon(Long uid, Long cid);
+    void collectOneCoupon(Long uid, Long couponId);
 }

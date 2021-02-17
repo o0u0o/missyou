@@ -62,7 +62,7 @@ public class CouponServiceImpl implements CouponService {
     /**
      * 领取优惠券
      * @param uid 用户id
-     * @param cid 被领取优惠券id
+     * @param couponId 被领取优惠券id
      */
     @Override
     public void collectOneCoupon(Long uid, Long couponId) {
@@ -81,10 +81,10 @@ public class CouponServiceImpl implements CouponService {
             throw new ParameterException(40005);
         }
 
-        //3、用户已经领取了优惠券
+        //3、用户已经领取了优惠券(如果存在的情况下)
         this.userCouponRepository
                 .findFirstByUserIdAndCouponId(uid, couponId)
-                .orElseThrow(() -> new ParameterException(40006));
+                .ifPresent((uc) -> {throw new ParameterException(40006);});
 
         //4、构建UserCoupon并保存
         UserCoupon userCouponNew = UserCoupon.builder()
