@@ -17,7 +17,17 @@ import java.util.Optional;
 @Repository
 public interface ActivityRepository extends JpaRepository<Activity, Long> {
 
+    /**
+     * 根据活动名查询活动
+     * @param name 活动名
+     * @return
+     */
     Activity findByName(String name);
 
+    /**
+     * 根据优惠券id查询活动列表
+     * @param couponId 优惠券id
+     * @return
+     */
     Optional<Activity> findByCouponListId(Long couponId);
 }

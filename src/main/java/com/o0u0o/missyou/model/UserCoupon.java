@@ -26,21 +26,21 @@ public class UserCoupon {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
     /** 用户ID */
-    private Integer userId;
+    private Long userId;
 
     /** 优惠券ID */
-    private Integer couponId;
+    private Long couponId;
 
     /** 订单ID */
-    private Integer orderId;
+    private Long orderId;
 
     /**
      * 1:未使用，2：已使用， 3：已过期
      */
-    private Byte status;
+    private Integer status;
 
     /**  创建时间 */
     private Date createTime;

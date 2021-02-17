@@ -3,13 +3,20 @@ package com.o0u0o.missyou.core.interceptors;
 
 import com.auth0.jwt.interfaces.Claim;
 import com.o0u0o.missyou.common.utils.JwtToken;
+import com.o0u0o.missyou.core.LocalUser;
 import com.o0u0o.missyou.core.http.ForbiddenException;
 import com.o0u0o.missyou.core.http.UnAuthenticatedException;
 import com.o0u0o.missyou.core.interceptors.annotation.ScopeLevel;
+import com.o0u0o.missyou.service.UserService;
+import com.o0u0o.missyou.model.User;
+import lombok.extern.apachecommons.CommonsLog;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
+
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -24,7 +31,12 @@ import java.util.Optional;
  * @Descripton: 许可拦截器
  * @Version: v0.0.1
  **/
+@Component
 public class PermissionInterceptor extends HandlerInterceptorAdapter {
+
+    /** 注入UserService 并在类上加入@Component注解 */
+    @Autowired
+    private UserService userService;
 
     public PermissionInterceptor() {
         super();
@@ -58,8 +70,12 @@ public class PermissionInterceptor extends HandlerInterceptorAdapter {
         Map<String, Claim> map = optionalMap.orElseThrow(
                 ()->new UnAuthenticatedException(10004));
 
-
         boolean hasPermission = this.hasPermission(scopeLevel.get(), map);
+
+        //如果有权限，设置用户对象
+        if (hasPermission){
+            this.setToThreadLocal(map);
+        }
 
         return hasPermission;
     }
@@ -77,7 +93,9 @@ public class PermissionInterceptor extends HandlerInterceptorAdapter {
                                 HttpServletResponse response,
                                 Object handler,
                                 Exception ex) throws Exception {
-
+        //清除threadlocal线程资源
+        LocalUser.clear();
+        super.afterCompletion(request, response, handler, ex);
     }
 
     /**
@@ -124,6 +142,14 @@ public class PermissionInterceptor extends HandlerInterceptorAdapter {
         }
         String token = tokens[1];
         return token;
+    }
+
+    private void setToThreadLocal(Map<String, Claim> map){
+        Long uid = map.get("uid").asLong();
+        Integer scope = map.get("scope").asInt();
+        //根据uid查询用户信息并设置进LocalUser
+        User user = userService.getUserById(uid);
+        LocalUser.set(user, scope);
     }
 
     /**

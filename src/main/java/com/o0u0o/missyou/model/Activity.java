@@ -54,6 +54,7 @@ public class Activity extends BaseEntity {
     /** 备注 */
     private String remark;
 
+    /** 优惠券列表 */
     @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "activityId")
     private List<Coupon> couponList;

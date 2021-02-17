@@ -2,6 +2,8 @@ package com.o0u0o.missyou.common.utils;
 
 import com.o0u0o.missyou.bo.PageCounter;
 
+import java.util.Date;
+
 /**
  * @ClassName CommonUtil
  * @Author aiuiot
@@ -26,5 +28,22 @@ public class CommonUtil {
                 .count(count)
                 .build();
         return pageCounter;
+    }
+
+    /**
+     * 判断是否在时间段内
+     * @param date 当前时间
+     * @param start 开始时间
+     * @param end 结束时间
+     * @return
+     */
+    public static Boolean isInTimeLine(Date date, Date start, Date end){
+        Long time = date.getTime();
+        Long startTime = start.getTime();
+        Long endTime = end.getTime();
+        if (time > startTime && time < endTime){
+            return true;
+        }
+        return false;
     }
 }

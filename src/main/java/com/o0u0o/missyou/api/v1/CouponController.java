@@ -1,14 +1,14 @@
 package com.o0u0o.missyou.api.v1;
 
 
+import com.o0u0o.missyou.core.LocalUser;
+import com.o0u0o.missyou.core.interceptors.annotation.ScopeLevel;
 import com.o0u0o.missyou.model.Coupon;
+import com.o0u0o.missyou.model.User;
 import com.o0u0o.missyou.service.CouponService;
 import com.o0u0o.missyou.vo.CouponPureVO;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Collections;
 import java.util.List;
@@ -49,5 +49,20 @@ public class CouponController {
             return Collections.emptyList();
         }
         return CouponPureVO.getList(coupons);
+    }
+
+    /**
+     * ScopeLevel 必须登录用户才可领取
+     * 注意：用户id不能显式传输到服务端 通过jwt令牌中获取用户id
+     * 原因：
+     *  1、可能出现超权问题 防止客户端篡改用户的id进行操作
+     * 用户领取优惠券
+     * @param id 优惠券id
+     */
+    @ScopeLevel()
+    @PostMapping("/collect/{id}")
+    public void collectCoupon(@PathVariable Long id){
+        Long uid = LocalUser.getUser().getId();
+        this.couponService.collectOneCoupon(uid, id);
     }
 }

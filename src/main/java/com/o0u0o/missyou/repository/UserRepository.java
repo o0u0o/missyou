@@ -6,7 +6,14 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
-
+/**
+ * @ClassName UserRepository
+ * @Author o0u0o
+ * @UpdateUser o0u0o
+ * @Date 2021/2/17 1:13 下午
+ * @Descripton: 用户数据仓库
+ * @Version: v0.0.1
+ **/
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
 
