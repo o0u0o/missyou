@@ -1,6 +1,7 @@
 package com.o0u0o.missyou.service.impl;
 
 import com.o0u0o.missyou.common.utils.CommonUtil;
+import com.o0u0o.missyou.core.enumeration.CouponStatus;
 import com.o0u0o.missyou.core.http.NotFoundException;
 import com.o0u0o.missyou.core.http.ParameterException;
 import com.o0u0o.missyou.model.Activity;
@@ -87,9 +88,12 @@ public class CouponServiceImpl implements CouponService {
                 .findFirstByCouponId(uid, couponId)
                 .orElseThrow(() -> new ParameterException(40006));
 
+        //4、构建UserCoupon并保存
         UserCoupon userCouponNew = UserCoupon.builder()
                 .userId(uid)
                 .couponId(couponId)
+                .status(CouponStatus.AVAILABLE.getValue())
+                .createTime(now)
                 .build();
         userCouponRepository.save(userCouponNew);
     }
