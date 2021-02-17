@@ -14,5 +14,16 @@ import java.util.List;
  **/
 public interface CouponService {
 
+    /**
+     * 根据分类获取优惠券
+     * @param cid
+     * @return
+     */
     List<Coupon> getByCategory(Long cid);
+
+    /**
+     * 查询全场券
+     * @return
+     */
+    List<Coupon> getWholeStoreCoupons();
 }

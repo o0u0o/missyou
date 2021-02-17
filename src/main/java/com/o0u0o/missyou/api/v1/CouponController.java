@@ -37,4 +37,17 @@ public class CouponController {
         List<CouponPureVO> vos = CouponPureVO.getList(coupons);
         return vos;
     }
+
+    /**
+     * 查询全场券
+     * @return
+     */
+    @GetMapping("/whole_store")
+    public List<CouponPureVO> getWholeStoreCouponList(){
+        List<Coupon> coupons = this.couponService.getWholeStoreCoupons();
+        if (coupons.isEmpty()){
+            return Collections.emptyList();
+        }
+        return CouponPureVO.getList(coupons);
+    }
 }

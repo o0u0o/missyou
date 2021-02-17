@@ -27,9 +27,25 @@ public class CouponServiceImpl implements CouponService {
     @Autowired
     private ActivityRepository activityRepository;
 
+    /**
+     * 根据分类获取优惠券
+     * 活动未过期的
+     * @param cid
+     * @return
+     */
     @Override
     public List<Coupon> getByCategory(Long cid) {
         Date now = new Date();
         return couponRepository.findByCategory(cid, now);
+    }
+
+    /**
+     * 获取全场券
+     * @return
+     */
+    @Override
+    public List<Coupon> getWholeStoreCoupons() {
+        Date now = new Date();
+        return couponRepository.findByWholeStore(true, now);
     }
 }
