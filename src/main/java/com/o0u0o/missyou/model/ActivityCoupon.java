@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.Entity;
+import javax.persistence.Id;
 
 /**
  * @ClassName ActivityCoupon
@@ -19,6 +20,7 @@ import javax.persistence.Entity;
 public class ActivityCoupon {
 
     /** 主键ID */
+    @Id
     private Integer id;
 
     /** 优惠券ID */
