@@ -4,12 +4,12 @@ package com.o0u0o.missyou.core.interceptors;
 import com.auth0.jwt.interfaces.Claim;
 import com.o0u0o.missyou.common.utils.JwtToken;
 import com.o0u0o.missyou.core.LocalUser;
-import com.o0u0o.missyou.core.http.ForbiddenException;
-import com.o0u0o.missyou.core.http.UnAuthenticatedException;
+import com.o0u0o.missyou.core.exception.http.ForbiddenException;
+import com.o0u0o.missyou.core.exception.http.UnAuthenticatedException;
 import com.o0u0o.missyou.core.interceptors.annotation.ScopeLevel;
+import com.o0u0o.missyou.service.ThemeService;
 import com.o0u0o.missyou.service.UserService;
 import com.o0u0o.missyou.model.User;
-import lombok.extern.apachecommons.CommonsLog;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -31,10 +31,9 @@ import java.util.Optional;
  * @Descripton: 许可拦截器
  * @Version: v0.0.1
  **/
-@Component
 public class PermissionInterceptor extends HandlerInterceptorAdapter {
 
-    /** 注入UserService 并在类上加入@Component注解 */
+    /** 注入UserService */
     @Autowired
     private UserService userService;
 
@@ -148,7 +147,7 @@ public class PermissionInterceptor extends HandlerInterceptorAdapter {
         Long uid = map.get("uid").asLong();
         Integer scope = map.get("scope").asInt();
         //根据uid查询用户信息并设置进LocalUser
-        User user = userService.getUserById(uid);
+        User user = this.userService.getUserById(uid);
         LocalUser.set(user, scope);
     }
 

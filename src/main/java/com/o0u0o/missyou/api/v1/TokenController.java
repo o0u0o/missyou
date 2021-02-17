@@ -2,7 +2,7 @@ package com.o0u0o.missyou.api.v1;
 
 
 import com.o0u0o.missyou.common.utils.JwtToken;
-import com.o0u0o.missyou.core.http.NotFoundException;
+import com.o0u0o.missyou.core.exception.http.NotFoundException;
 import com.o0u0o.missyou.dto.token.TokenDTO;
 import com.o0u0o.missyou.dto.token.TokenGetDTO;
 import com.o0u0o.missyou.service.WxAuthenticationService;

@@ -1,7 +1,7 @@
 package com.o0u0o.missyou.api.v1;
 
 import com.o0u0o.missyou.bo.PageCounter;
-import com.o0u0o.missyou.core.http.NotFoundException;
+import com.o0u0o.missyou.core.exception.http.NotFoundException;
 import com.o0u0o.missyou.model.Spu;
 import com.o0u0o.missyou.service.SpuService;
 import com.o0u0o.missyou.common.utils.CommonUtil;

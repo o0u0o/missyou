@@ -1,4 +1,4 @@
-package com.o0u0o.missyou.core.http;
+package com.o0u0o.missyou.core.exception;
 
 import lombok.Data;
 

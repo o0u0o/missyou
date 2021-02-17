@@ -1,6 +1,7 @@
-package com.o0u0o.missyou.core.http;
+package com.o0u0o.missyou.core.exception.http;
 
 
+import com.o0u0o.missyou.core.exception.HttpException;
 import org.springframework.http.HttpStatus;
 
 /**

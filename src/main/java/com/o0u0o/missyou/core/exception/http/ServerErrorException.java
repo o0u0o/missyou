@@ -1,6 +1,6 @@
-package com.o0u0o.missyou.core.http;
+package com.o0u0o.missyou.core.exception.http;
 
-import org.springframework.http.HttpStatus;
+import com.o0u0o.missyou.core.exception.HttpException;
 
 /**
  * @ClassName ServerErrorException

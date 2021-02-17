@@ -1,10 +1,10 @@
 package com.o0u0o.missyou.api.v1;
 
-import com.o0u0o.missyou.core.http.NotFoundException;
+import com.o0u0o.missyou.core.exception.http.NotFoundException;
 import com.o0u0o.missyou.core.interceptors.annotation.ScopeLevel;
 import com.o0u0o.missyou.model.Banner;
 import com.o0u0o.missyou.service.BannerService;
-import com.o0u0o.missyou.core.http.ForbiddenException;
+import com.o0u0o.missyou.core.exception.http.ForbiddenException;
 import com.o0u0o.missyou.dto.PersonDTO;
 import com.o0u0o.missyou.simple.ISkill;
 import com.o0u0o.missyou.simple.database.IConnect;

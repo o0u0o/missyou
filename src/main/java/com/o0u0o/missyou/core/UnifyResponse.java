@@ -1,5 +1,6 @@
 package com.o0u0o.missyou.core;
 
+import com.o0u0o.missyou.core.exception.success.CreateSuccess;
 import lombok.Data;
 
 /**
@@ -27,4 +28,9 @@ public class UnifyResponse {
         this.message = message;
         this.request = request;
     }
+
+    public static void createSuccess(int code){
+        throw new CreateSuccess(0);
+    }
+
 }

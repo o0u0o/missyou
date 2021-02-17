@@ -2,6 +2,7 @@ package com.o0u0o.missyou.api.v1;
 
 
 import com.o0u0o.missyou.core.LocalUser;
+import com.o0u0o.missyou.core.UnifyResponse;
 import com.o0u0o.missyou.core.interceptors.annotation.ScopeLevel;
 import com.o0u0o.missyou.model.Coupon;
 import com.o0u0o.missyou.model.User;
@@ -9,6 +10,7 @@ import com.o0u0o.missyou.service.CouponService;
 import com.o0u0o.missyou.vo.CouponPureVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import com.o0u0o.missyou.core.exception.success.CreateSuccess;
 
 import java.util.Collections;
 import java.util.List;
@@ -51,6 +53,7 @@ public class CouponController {
         return CouponPureVO.getList(coupons);
     }
 
+
     /**
      * ScopeLevel 必须登录用户才可领取
      * 注意：用户id不能显式传输到服务端 通过jwt令牌中获取用户id
@@ -63,6 +66,7 @@ public class CouponController {
     @PostMapping("/collect/{id}")
     public void collectCoupon(@PathVariable Long id){
         Long uid = LocalUser.getUser().getId();
-        this.couponService.collectOneCoupon(uid, id);
+        couponService.collectOneCoupon(uid, id);
+        UnifyResponse.createSuccess(0);
     }
 }

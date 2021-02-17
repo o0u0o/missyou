@@ -1,11 +1,10 @@
 package com.o0u0o.missyou.api.v1;
 
-import com.o0u0o.missyou.core.http.NotFoundException;
+import com.o0u0o.missyou.core.exception.http.NotFoundException;
 import com.o0u0o.missyou.model.Activity;
 import com.o0u0o.missyou.service.ActivityService;
 import com.o0u0o.missyou.vo.ActivityCouponVO;
 import com.o0u0o.missyou.vo.ActivityPureVO;
-import jdk.nashorn.internal.objects.annotations.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;

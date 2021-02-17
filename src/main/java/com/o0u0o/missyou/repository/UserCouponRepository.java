@@ -16,7 +16,13 @@ import java.util.Optional;
  * @Version: v0.0.1
  **/
 @Repository
-public interface UserCouponRepository  extends JpaRepository<UserCoupon, Long> {
+public interface UserCouponRepository extends JpaRepository<UserCoupon, Long> {
 
-    Optional<UserCoupon> findFirstByCouponId(Long uid, Long couponId);
+    /**
+     * 根据用户id和优惠券id查询用户的优惠券
+     * @param uid 用户id
+     * @param couponId 优惠券id
+     * @return
+     */
+    Optional<UserCoupon> findFirstByUserIdAndCouponId(Long uid, Long couponId);
 }

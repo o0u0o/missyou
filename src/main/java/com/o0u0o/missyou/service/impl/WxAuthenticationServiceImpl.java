@@ -3,7 +3,7 @@ package com.o0u0o.missyou.service.impl;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.o0u0o.missyou.common.utils.JwtToken;
-import com.o0u0o.missyou.core.http.ParameterException;
+import com.o0u0o.missyou.core.exception.http.ParameterException;
 import com.o0u0o.missyou.model.User;
 import com.o0u0o.missyou.repository.UserRepository;
 import com.o0u0o.missyou.service.WxAuthenticationService;

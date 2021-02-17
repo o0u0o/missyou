@@ -2,8 +2,8 @@ package com.o0u0o.missyou.service.impl;
 
 import com.o0u0o.missyou.common.utils.CommonUtil;
 import com.o0u0o.missyou.core.enumeration.CouponStatus;
-import com.o0u0o.missyou.core.http.NotFoundException;
-import com.o0u0o.missyou.core.http.ParameterException;
+import com.o0u0o.missyou.core.exception.http.NotFoundException;
+import com.o0u0o.missyou.core.exception.http.ParameterException;
 import com.o0u0o.missyou.model.Activity;
 import com.o0u0o.missyou.model.Coupon;
 import com.o0u0o.missyou.model.UserCoupon;
@@ -13,11 +13,9 @@ import com.o0u0o.missyou.repository.UserCouponRepository;
 import com.o0u0o.missyou.service.CouponService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 /**
  * @ClassName CouponServiceImpl
@@ -85,7 +83,7 @@ public class CouponServiceImpl implements CouponService {
 
         //3、用户已经领取了优惠券
         this.userCouponRepository
-                .findFirstByCouponId(uid, couponId)
+                .findFirstByUserIdAndCouponId(uid, couponId)
                 .orElseThrow(() -> new ParameterException(40006));
 
         //4、构建UserCoupon并保存

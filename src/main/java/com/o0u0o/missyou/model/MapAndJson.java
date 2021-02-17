@@ -2,7 +2,7 @@ package com.o0u0o.missyou.model;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.o0u0o.missyou.core.http.ServerErrorException;
+import com.o0u0o.missyou.core.exception.http.ServerErrorException;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.persistence.AttributeConverter;
