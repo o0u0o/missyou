@@ -95,4 +95,34 @@ public class CouponServiceImpl implements CouponService {
                 .build();
         userCouponRepository.save(userCouponNew);
     }
+
+    /**
+     * 查询我的可使用的优惠券
+     * @param uid 用户id
+     * @return
+     */
+    @Override
+    public List<Coupon> getMyAvailableCoupons(Long uid) {
+        return null;
+    }
+
+    /**
+     * 查询我的已使用的优惠券
+     * @param uid 用户id
+     * @return
+     */
+    @Override
+    public List<Coupon> getMyUsedCoupons(Long uid) {
+        return null;
+    }
+
+    /**
+     * 查询我的已过期的优惠券
+     * @param uid 用户id
+     * @return
+     */
+    @Override
+    public List<Coupon> getMyExpiredCoupons(Long uid) {
+        return null;
+    }
 }

@@ -1,5 +1,7 @@
 package com.o0u0o.missyou.core.enumeration;
 
+import java.util.stream.Stream;
+
 /**
  * @ClassName CouponStatus
  * @Author o0u0o
@@ -9,8 +11,11 @@ package com.o0u0o.missyou.core.enumeration;
  * @Version: v0.0.1
  **/
 public enum CouponStatus {
+
     AVAILABLE(1, "可以使用,未过期"),
+
     USED(2, "已使用"),
+
     EXPIRED(3, "未使用,已过期");
 
     private Integer value;
@@ -23,5 +28,12 @@ public enum CouponStatus {
     private CouponStatus(Integer value, String description){
         this.value = value;
         this.description = description;
+    }
+
+    public static CouponStatus toType(int value){
+        return Stream.of(CouponStatus.values())
+                .filter(c -> c.value == value)
+                .findAny()
+                .orElse(null);
     }
 }

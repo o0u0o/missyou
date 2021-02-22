@@ -33,4 +33,25 @@ public interface CouponService {
      * @param couponId 优惠券id
      */
     void collectOneCoupon(Long uid, Long couponId);
+
+    /**
+     * 获取问我的可使用的优惠券
+     * @param uid 用户id
+     * @return
+     */
+    List<Coupon> getMyAvailableCoupons(Long uid);
+
+    /**
+     * 获取我的已使用的优惠券
+     * @param uid 用户id
+     * @return
+     */
+    List<Coupon> getMyUsedCoupons(Long uid);
+
+    /**
+     * 获取我的已过期的优惠券
+     * @param uid 用户id
+     * @return
+     */
+    List<Coupon> getMyExpiredCoupons(Long uid);
 }

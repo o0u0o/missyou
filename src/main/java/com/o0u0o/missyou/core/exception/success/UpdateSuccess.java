@@ -3,12 +3,6 @@ package com.o0u0o.missyou.core.exception.success;
 import com.o0u0o.missyou.core.exception.HttpException;
 
 /**
- * TODO
- *
- * @author mac
- * @date
- */
-/**
  * @ClassName UpdateSuccess
  * @Author o0u0o
  * @UpdateUser o0u0o

@@ -3,6 +3,7 @@ package com.o0u0o.missyou.api.v1;
 
 import com.o0u0o.missyou.core.LocalUser;
 import com.o0u0o.missyou.core.UnifyResponse;
+import com.o0u0o.missyou.core.enumeration.CouponStatus;
 import com.o0u0o.missyou.core.interceptors.annotation.ScopeLevel;
 import com.o0u0o.missyou.model.Coupon;
 import com.o0u0o.missyou.model.User;
@@ -69,4 +70,37 @@ public class CouponController {
         couponService.collectOneCoupon(uid, id);
         UnifyResponse.createSuccess(0);
     }
+
+    /**
+     * 根据状态来获得我的优惠券
+     * 难点：
+     * 1、需要涉及到优惠券规划：
+     * 场景：用户使用优惠券下单后用户取消支付或者未支付，此时该使用的优惠券需要归还给用户
+     * @param status 状态
+     *               1-未使用 2-已使用 3-已过期
+     *
+     *       触发机制：
+     *               1、主动触发
+     *                  定时器
+     *               2、被动触发
+     *                  redis / rocketMQ / rabbitMq
+     * @return
+     */
+    @ScopeLevel
+    @GetMapping("/myself/by/status/{status}")
+    public List<CouponPureVO> getMyCouponByStatus(@PathVariable Integer status){
+        Long uid = LocalUser.getUser().getId();
+
+        //要考虑到延时订单支付使用了优惠券，未支付时需要退还
+        switch (CouponStatus.toType(status)){
+            case AVAILABLE:
+                break;
+            case USED:
+                break;
+            case EXPIRED:
+                break;
+        }
+        return null;
+    }
+
 }
