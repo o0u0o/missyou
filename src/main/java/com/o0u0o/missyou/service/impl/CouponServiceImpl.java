@@ -103,7 +103,8 @@ public class CouponServiceImpl implements CouponService {
      */
     @Override
     public List<Coupon> getMyAvailableCoupons(Long uid) {
-        return null;
+        Date now = new Date();
+        return this.couponRepository.findMyAvailable(uid, now);
     }
 
     /**
@@ -113,7 +114,8 @@ public class CouponServiceImpl implements CouponService {
      */
     @Override
     public List<Coupon> getMyUsedCoupons(Long uid) {
-        return null;
+        Date now = new Date();
+        return this.couponRepository.findMyUsed(uid, now);
     }
 
     /**
@@ -123,6 +125,7 @@ public class CouponServiceImpl implements CouponService {
      */
     @Override
     public List<Coupon> getMyExpiredCoupons(Long uid) {
-        return null;
+        Date now = new Date();
+        return this.couponRepository.findMyExpired(uid, now);
     }
 }

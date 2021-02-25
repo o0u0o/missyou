@@ -4,10 +4,12 @@ package com.o0u0o.missyou.api.v1;
 import com.o0u0o.missyou.core.LocalUser;
 import com.o0u0o.missyou.core.UnifyResponse;
 import com.o0u0o.missyou.core.enumeration.CouponStatus;
+import com.o0u0o.missyou.core.exception.http.ParameterException;
 import com.o0u0o.missyou.core.interceptors.annotation.ScopeLevel;
 import com.o0u0o.missyou.model.Coupon;
 import com.o0u0o.missyou.model.User;
 import com.o0u0o.missyou.service.CouponService;
+import com.o0u0o.missyou.vo.CouponCategoryVO;
 import com.o0u0o.missyou.vo.CouponPureVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +17,7 @@ import com.o0u0o.missyou.core.exception.success.CreateSuccess;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @ClassName CouponController
@@ -90,17 +93,42 @@ public class CouponController {
     @GetMapping("/myself/by/status/{status}")
     public List<CouponPureVO> getMyCouponByStatus(@PathVariable Integer status){
         Long uid = LocalUser.getUser().getId();
+        List<Coupon> couponList;
 
         //要考虑到延时订单支付使用了优惠券，未支付时需要退还
         switch (CouponStatus.toType(status)){
             case AVAILABLE:
+                couponList = couponService.getMyAvailableCoupons(uid);
                 break;
             case USED:
+                couponList = couponService.getMyUsedCoupons(uid);
                 break;
             case EXPIRED:
+                couponList = couponService.getMyExpiredCoupons(uid);
                 break;
+            default:
+                throw new ParameterException(40001);
         }
-        return null;
+        return CouponPureVO.getList(couponList);
+    }
+
+    /**
+     * 通过分类查询我的可用的优惠券
+     * @return
+     */
+    @ScopeLevel()
+    @GetMapping("/myself/available/with_category")
+    public List<CouponCategoryVO> getUserCouponWithCategory(){
+        User user = LocalUser.getUser();
+        List<Coupon> coupons = couponService.getMyAvailableCoupons(user.getId());
+        if (coupons.isEmpty()){
+            return Collections.emptyList();
+        }
+
+        return coupons.stream().map(coupon -> {
+            CouponCategoryVO vo = new CouponCategoryVO(coupon);
+            return vo;
+        }).collect(Collectors.toList());
     }
 
 }
