@@ -16,8 +16,10 @@ import java.util.stream.Stream;
 @Getter
 public enum CouponType {
 
+    /** 满多少减多少 */
     FULL_MINUS(1, "满减券"),
 
+    /** 满多少打多少折扣 */
     FULL_OFF(2, "满减折扣券"),
 
     NO_THRESHOLD_MINUS(3, "无门槛减除券");
