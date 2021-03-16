@@ -2,6 +2,7 @@ package com.o0u0o.missyou.service.impl;
 
 import com.o0u0o.missyou.core.exception.http.NotFoundException;
 import com.o0u0o.missyou.core.exception.http.ParameterException;
+import com.o0u0o.missyou.core.money.IMoneyDiscount;
 import com.o0u0o.missyou.dto.OrderDTO;
 import com.o0u0o.missyou.dto.SkuInfoDTO;
 import com.o0u0o.missyou.logic.CouponChecker;
@@ -40,6 +41,9 @@ public class OrderServiceImpl implements OrderService {
     @Autowired
     private UserCouponRepository userCouponRepository;
 
+    @Autowired
+    private IMoneyDiscount iMoneyDiscount;
+
     @Override
     public void isOk(Long uid, OrderDTO orderDTO){
         //前端计算的总的实际支付价格小于或等于0
@@ -65,7 +69,7 @@ public class OrderServiceImpl implements OrderService {
                     .orElseThrow(()-> new NotFoundException(40004));
             UserCoupon userCoupon = this.userCouponRepository.findFirstByUserIdAndCouponId(uid, couponId)
                     .orElseThrow(()->new NotFoundException(50006));
-            couponChecker = new CouponChecker(coupon, userCoupon);
+            couponChecker = new CouponChecker(coupon, userCoupon, iMoneyDiscount);
         }
 
     }
