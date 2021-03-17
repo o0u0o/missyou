@@ -5,16 +5,14 @@ import com.o0u0o.missyou.common.utils.CommonUtil;
 import com.o0u0o.missyou.core.enumeration.CouponType;
 import com.o0u0o.missyou.core.exception.http.ForbiddenException;
 import com.o0u0o.missyou.core.exception.http.ParameterException;
-import com.o0u0o.missyou.core.money.HalfEvenRound;
 import com.o0u0o.missyou.core.money.IMoneyDiscount;
+import com.o0u0o.missyou.model.Category;
 import com.o0u0o.missyou.model.Coupon;
-import com.o0u0o.missyou.model.UserCoupon;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @ClassName CouponChecker
@@ -28,8 +26,6 @@ public class CouponChecker {
 
     private Coupon coupon;
 
-    private UserCoupon userCoupon;
-
     private IMoneyDiscount iMoneyDiscount;
 
     /**
@@ -37,9 +33,9 @@ public class CouponChecker {
      * @param coupon 优惠券实体
      * @param userCoupon
      */
-    public CouponChecker(Coupon coupon, UserCoupon userCoupon, IMoneyDiscount iMoneyDiscount){
+    public CouponChecker(Coupon coupon, IMoneyDiscount iMoneyDiscount){
         this.coupon = coupon;
-        this.userCoupon = userCoupon;
+        this.iMoneyDiscount = iMoneyDiscount;
     }
 
     public void isOk(){
@@ -111,11 +107,48 @@ public class CouponChecker {
         //分类下的价格的总和
         BigDecimal orderCategoryPrice;
 
+        //全场券无需计算分类下的总价
         if (this.coupon.getWholeStore()){
             orderCategoryPrice = serverTotalPrice;
         }
 
-        //
+        else {
+            List<Long> cidList = this.coupon.getCategoryList().stream()
+                    .map(Category::getId)
+                    .collect(Collectors.toList());
+            orderCategoryPrice = this.getSumByCategoryList(skuOrderBOList, cidList);
+        }
+
+        this.couponCanBeUsed(orderCategoryPrice);
+    }
+
+    /**
+     * 优惠券是否能使用校验
+     * @param orderCategoryPrice
+     */
+    private void couponCanBeUsed(BigDecimal orderCategoryPrice){
+        switch (CouponType.toType(this.coupon.getType())){
+            case FULL_OFF:
+            case FULL_MINUS:
+                int compare = this.coupon.getFullMoney().compareTo(orderCategoryPrice);
+                if (compare > 0){
+                    throw new ParameterException(40008);
+                }
+                break;
+
+            case NO_THRESHOLD_MINUS:
+                break;
+        }
+    }
+
+    /**
+     * 计算多个分类下的总价
+     * @return
+     */
+    private BigDecimal getSumByCategoryList(List<SkuOrderBO> skuOrderBOList, List<Long> cidList){
+        return cidList.stream()
+                .map(cid -> this.getSumByCategory(skuOrderBOList, cid))
+                .reduce(BigDecimal::add).orElse(new BigDecimal("0"));
     }
 
     /**

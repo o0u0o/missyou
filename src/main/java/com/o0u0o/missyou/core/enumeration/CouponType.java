@@ -22,6 +22,7 @@ public enum CouponType {
     /** 满多少打多少折扣 */
     FULL_OFF(2, "满减折扣券"),
 
+    /** 无门槛减除券 */
     NO_THRESHOLD_MINUS(3, "无门槛减除券");
 
     private int value;
