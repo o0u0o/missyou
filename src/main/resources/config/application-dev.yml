@@ -18,3 +18,6 @@ missyou:
     jwt-key: 2333333yue
     # 令牌过期时间
     token-expried-in: 86400000
+  #下订单的最大购买数量不能超过777
+  order:
+    max-sku-limit: 777

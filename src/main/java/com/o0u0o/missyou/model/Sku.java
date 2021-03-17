@@ -2,6 +2,7 @@ package com.o0u0o.missyou.model;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -19,6 +20,7 @@ import java.util.Map;
 @Getter
 @Setter
 @Entity
+@Where(clause = "delete_time is null and online = 1")
 public class Sku extends BaseEntity{
 
     @Id
