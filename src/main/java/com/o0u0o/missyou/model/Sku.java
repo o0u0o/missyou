@@ -37,6 +37,7 @@ public class Sku extends BaseEntity{
     /** 图片 */
     private String img;
 
+    /** 标题 */
     private String title;
 
     private Long spuId;
@@ -60,6 +61,11 @@ public class Sku extends BaseEntity{
 
     /** 库存量 */
     private Long stock;
+
+    /** 获取真实价格 */
+    public BigDecimal getActualPrice(){
+        return discountPrice == null ? this.price : this.discountPrice;
+    }
 
 //    public List<Spec> getSpecs(){
 //        String specs = this.specs;

@@ -1,5 +1,6 @@
 package com.o0u0o.missyou.logic;
 
+import com.o0u0o.missyou.bo.SkuOrderBO;
 import com.o0u0o.missyou.common.utils.CommonUtil;
 import com.o0u0o.missyou.core.enumeration.CouponType;
 import com.o0u0o.missyou.core.exception.http.ForbiddenException;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @ClassName CouponChecker
@@ -105,11 +107,33 @@ public class CouponChecker {
      * A 鞋子和包包
      * 核对当前优惠券能否被使用
      */
-    public void canBeUsed(){
-        //sku price sku_model
-        //sku count order
-        //sku category id
-        //coupon
+    public void canBeUsed(List<SkuOrderBO> skuOrderBOList, BigDecimal serverTotalPrice){
+        //分类下的价格的总和
+        BigDecimal orderCategoryPrice;
+
+        if (this.coupon.getWholeStore()){
+            orderCategoryPrice = serverTotalPrice;
+        }
+
+        //
     }
+
+    /**
+     * 计算该分类下的总价
+     * @param skuOrderBOList sku订单bo
+     * @param cid 分类id
+     * @return
+     */
+    private BigDecimal getSumByCategory(List<SkuOrderBO> skuOrderBOList, Long cid){
+        BigDecimal sum = skuOrderBOList.stream()
+                .filter(sku -> sku.getCategoryId().equals(cid))
+                .map(bo -> bo.getTotalPrice())
+                //累加（方法引用方式来写）
+                .reduce(BigDecimal::add)
+                .orElse(new BigDecimal("0"));
+        return sum;
+    }
+
+
 
 }
