@@ -1,5 +1,6 @@
 package com.o0u0o.missyou.service.impl;
 
+import com.o0u0o.missyou.common.utils.CommonUtil;
 import com.o0u0o.missyou.common.utils.OrderUtil;
 import com.o0u0o.missyou.core.enumeration.OrderStatus;
 import com.o0u0o.missyou.core.exception.http.ForbiddenException;
@@ -24,6 +25,8 @@ import org.springframework.transaction.annotation.Propagation;
 
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -111,6 +114,11 @@ public class OrderServiceImpl implements OrderService {
         //1、创建订单
         //1.1  生成随机订单号
         String orderNo = OrderUtil.makeOrderNo();
+        Calendar now = Calendar.getInstance();
+        Calendar nowClone = (Calendar)now.clone();
+        //订单过期时间
+        Date expiredTime = CommonUtil.addSomeSeconds(now, this.payTimeLimit).getTime();
+
         Order order = Order.builder()
                 .orderNo(orderNo)
                 .totalPrice(orderDTO.getTotalPrice())
@@ -120,9 +128,12 @@ public class OrderServiceImpl implements OrderService {
                 .snapImg(orderChecker.getLeaderImg())
                 .snapTitle(orderChecker.getLeaderTitle())
                 .status(OrderStatus.UNPAID.value())
+                .expiredTime(expiredTime)
+                .placedTime(nowClone.getTime())
                 .build();
         order.setSnapAddress(orderDTO.getAddress());
         order.setSnapItems(orderChecker.getOrderSkuList());
+
         //1.2 写入数据库
         this.orderRepository.save(order);
 
@@ -148,7 +159,7 @@ public class OrderServiceImpl implements OrderService {
         //遍历对每个sku进行减库存
         for (OrderSku orderSku : orderSkuList) {
             //防止扣库存出现负数情况
-            int result = this.skuRepository.reduceStock(orderSku.getId(), orderSku.getCount());
+            int result = this.skuRepository.reduceStock(orderSku.getId(), orderSku.getCount().longValue());
             if (result  != 1){
                 throw new ParameterException(50003);
             }

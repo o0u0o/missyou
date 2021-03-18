@@ -57,8 +57,10 @@ public class Order extends BaseEntity {
     /** 订单标题快照 */
     private String snapTitle;
 
+    /** 订单过期时间 */
     private Date expiredTime;
 
+    /** 下单的时间 */
     private Date placedTime;
 
     /** 当前订单所有要购买的信息 */

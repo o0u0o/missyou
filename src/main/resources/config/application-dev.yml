@@ -22,7 +22,7 @@ missyou:
   order:
     # 下订单的最大购买数量不能超过777
     max-sku-limit: 777
-    # 支付超时时间
+    # 支付超时时间 1小时
     pay-time-limit: 3600
     # 支付回调地址
     pay-callback-host: http://www.o0u0o.com

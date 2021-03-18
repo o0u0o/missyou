@@ -2,6 +2,7 @@ package com.o0u0o.missyou.common.utils;
 
 import com.o0u0o.missyou.bo.PageCounter;
 
+import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -28,6 +29,17 @@ public class CommonUtil {
                 .count(count)
                 .build();
         return pageCounter;
+    }
+
+    /**
+     * 计算过期时间
+     * @param calendar 当前的时间
+     * @param seconds 多少秒过期
+     * @return
+     */
+    public static Calendar addSomeSeconds(Calendar calendar, int seconds){
+        calendar.add(Calendar.SECOND, seconds);
+        return calendar;
     }
 
     /**

@@ -1,6 +1,5 @@
 package com.o0u0o.missyou.repository;
 
-import com.o0u0o.missyou.model.User;
 import com.o0u0o.missyou.model.UserCoupon;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -39,10 +38,10 @@ public interface UserCouponRepository extends JpaRepository<UserCoupon, Long> {
      * @return
      */
     @Modifying
-    @Query("update UserCoupon uc set \n" +
-            "uc.status = 2, uc.orderId = :oid  \n" +
-            "where uc.couponId = : couponId\n " +
-            "and uc.userId = :uid\n " +
+    @Query("update UserCoupon uc\n" +
+            "set uc.status = 2, uc.orderId = :oid\n" +
+            "where uc.userId = :uid\n " +
+            "and uc.couponId = :couponId\n " +
             "and uc.status = 1 \n" +
             "and uc.orderId is null")
     int writeOff(Long couponId, Long oid, Long uid);

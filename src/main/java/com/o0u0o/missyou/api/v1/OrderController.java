@@ -46,7 +46,7 @@ public class OrderController {
         OrderChecker orderChecker = this.orderService.isOk(uid, orderDTO);
 
         //下订单
-        this.orderService.placeOrder(uid, orderDTO, orderChecker);
-        return null;
+        Long oid = this.orderService.placeOrder(uid, orderDTO, orderChecker);
+        return new OrderIdVO(oid);
     }
 }

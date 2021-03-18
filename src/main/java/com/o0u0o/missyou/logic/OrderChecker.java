@@ -97,7 +97,7 @@ public class OrderChecker {
             //检验是否超库存
             this.beyondMaxSkuLimit(skuInfoDTO);
 
-            serverTotalPrice.add(this.calculateSkuOrderPrice(sku, skuInfoDTO));
+            serverTotalPrice = serverTotalPrice.add(this.calculateSkuOrderPrice(sku, skuInfoDTO));
             skuOrderBOList.add(new SkuOrderBO(sku, skuInfoDTO));
             this.orderSkuList.add(new OrderSku(sku, skuInfoDTO));
         }
