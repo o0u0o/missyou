@@ -34,7 +34,7 @@ public class CommonUtil {
     /**
      * 计算过期时间
      * @param calendar 当前的时间
-     * @param seconds 多少秒过期
+     * @param seconds 多少秒后过期
      * @return
      */
     public static Calendar addSomeSeconds(Calendar calendar, int seconds){
