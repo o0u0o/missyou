@@ -6,6 +6,7 @@ import com.o0u0o.missyou.core.money.IMoneyDiscount;
 import com.o0u0o.missyou.dto.OrderDTO;
 import com.o0u0o.missyou.dto.SkuInfoDTO;
 import com.o0u0o.missyou.logic.CouponChecker;
+import com.o0u0o.missyou.logic.OrderChecker;
 import com.o0u0o.missyou.model.Coupon;
 import com.o0u0o.missyou.model.Sku;
 import com.o0u0o.missyou.model.UserCoupon;
@@ -14,6 +15,7 @@ import com.o0u0o.missyou.repository.UserCouponRepository;
 import com.o0u0o.missyou.service.OrderService;
 import com.o0u0o.missyou.service.SkuService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -44,8 +46,15 @@ public class OrderServiceImpl implements OrderService {
     @Autowired
     private IMoneyDiscount iMoneyDiscount;
 
+    @Value("${missyou.order.max-sku-limit}")
+    private int maxSkuLimit;
+
+    @Value("${missyou.order.pay-time-limit}")
+    private int payTimeLimit;
+
+
     @Override
-    public void isOk(Long uid, OrderDTO orderDTO){
+    public OrderChecker isOk(Long uid, OrderDTO orderDTO){
         //前端计算的总的实际支付价格小于或等于0
         if (orderDTO.getFinalTotalPrice().compareTo(new BigDecimal("0")) <= 0){
             throw new ParameterException(50011);
@@ -72,5 +81,9 @@ public class OrderServiceImpl implements OrderService {
             couponChecker = new CouponChecker(coupon, iMoneyDiscount);
         }
 
+        //校验订单
+        OrderChecker orderChecker = new OrderChecker(orderDTO, skuList, couponChecker, this.maxSkuLimit);
+        orderChecker.isOk();
+        return orderChecker;
     }
 }

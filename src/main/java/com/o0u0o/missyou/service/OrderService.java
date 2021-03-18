@@ -2,6 +2,7 @@ package com.o0u0o.missyou.service;
 
 
 import com.o0u0o.missyou.dto.OrderDTO;
+import com.o0u0o.missyou.logic.OrderChecker;
 
 /**
  * @ClassName OrderService
@@ -13,6 +14,12 @@ import com.o0u0o.missyou.dto.OrderDTO;
  **/
 public interface OrderService {
 
-    public void isOk(Long uid, OrderDTO orderDTO);
+    /**
+     * 订单检查是否OK
+     * @param uid 用户id
+     * @param orderDTO 订单DTO
+     * @return
+     */
+    public OrderChecker isOk(Long uid, OrderDTO orderDTO);
 
 }

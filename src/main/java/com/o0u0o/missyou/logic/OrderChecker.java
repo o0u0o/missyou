@@ -4,7 +4,9 @@ import com.o0u0o.missyou.bo.SkuOrderBO;
 import com.o0u0o.missyou.core.exception.http.ParameterException;
 import com.o0u0o.missyou.dto.OrderDTO;
 import com.o0u0o.missyou.dto.SkuInfoDTO;
+import com.o0u0o.missyou.model.OrderSku;
 import com.o0u0o.missyou.model.Sku;
+import lombok.Getter;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -33,6 +35,9 @@ public class OrderChecker {
 
     private Integer maxSkuLimit;
 
+    @Getter
+    private List<OrderSku> orderSkuList = new ArrayList<>();
+
     public OrderChecker(OrderDTO orderDTO, List<Sku> serverSkuList,
                         CouponChecker couponChecker, Integer maxSkuLimit){
         this.orderDTO = orderDTO;
@@ -40,6 +45,35 @@ public class OrderChecker {
         this.couponChecker = couponChecker;
         this.maxSkuLimit = maxSkuLimit;
     }
+
+    /**
+     * 获取主要的图片（默认第一张）
+     * @return
+     */
+    public String getLeaderImg(){
+        return this.serverSkuList.get(0).getImg();
+    }
+
+    /**
+     * 获取title
+     * @return
+     */
+    public String getLeaderTitle(){
+        return this.serverSkuList.get(0).getTitle();
+    }
+
+    /**
+     * 获取总数量
+     * @return
+     */
+    public Integer getTotalCount(){
+        return this.orderDTO.getSkuInfoList()
+                .stream()
+                .map(SkuInfoDTO::getCount)
+                .reduce(Integer::sum)
+                .orElse(0);
+    }
+
 
     public void isOk(){
         //1、校验orderTotalPrice 和 serverTotalPrice
@@ -65,6 +99,7 @@ public class OrderChecker {
 
             serverTotalPrice.add(this.calculateSkuOrderPrice(sku, skuInfoDTO));
             skuOrderBOList.add(new SkuOrderBO(sku, skuInfoDTO));
+            this.orderSkuList.add(new OrderSku(sku, skuInfoDTO));
         }
 
         //校验服务端计算的总价格和客户端计算的总价格是否一致

@@ -34,10 +34,10 @@ public class OrderSku {
 
     /**
      * 构造函数
-     * @param skuInfoDTO 前端传入的sku订单信息
      * @param sku 服务端的sku信息
+     * @param skuInfoDTO 前端传入的sku订单信息
      */
-    public OrderSku(SkuInfoDTO skuInfoDTO, Sku sku){
+    public OrderSku(Sku sku, SkuInfoDTO skuInfoDTO){
         this.id = sku.getId();
         this.spuId = sku.getSpuId();
         this.singlePrice = sku.getActualPrice();
