@@ -83,7 +83,7 @@ public class CouponServiceImpl implements CouponService {
 
         //3、用户已经领取了优惠券(如果存在的情况下)
         this.userCouponRepository
-                .findFirstByUserIdAndCouponId(uid, couponId)
+                .findFirstByUserIdAndCouponIdAndStatus(uid, couponId, 1)
                 .ifPresent((uc) -> {throw new ParameterException(40006);});
 
         //4、构建UserCoupon并保存

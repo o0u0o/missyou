@@ -1,6 +1,8 @@
 package com.o0u0o.missyou.model;
 
 import com.o0u0o.missyou.dto.SkuInfoDTO;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -13,6 +15,8 @@ import java.util.List;
  * @Date 2021/3/17 5:11 下午
  * @Version: v0.0.1
  **/
+@Getter
+@Setter
 public class OrderSku {
     private Long id;
 

@@ -12,13 +12,16 @@ import com.o0u0o.missyou.logic.OrderChecker;
 import com.o0u0o.missyou.model.*;
 import com.o0u0o.missyou.repository.CouponRepository;
 import com.o0u0o.missyou.repository.OrderRepository;
+import com.o0u0o.missyou.repository.SkuRepository;
 import com.o0u0o.missyou.repository.UserCouponRepository;
 import com.o0u0o.missyou.service.OrderService;
 import com.o0u0o.missyou.service.SkuService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 
+import javax.transaction.Transactional;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -45,6 +48,9 @@ public class OrderServiceImpl implements OrderService {
 
     @Autowired
     private OrderRepository orderRepository;
+
+    @Autowired
+    private SkuRepository skuRepository;
 
     @Autowired
     private IMoneyDiscount iMoneyDiscount;
@@ -79,7 +85,7 @@ public class OrderServiceImpl implements OrderService {
         if (couponId != null){
             Coupon coupon = this.couponRepository.findById(couponId)
                     .orElseThrow(()-> new NotFoundException(40004));
-            UserCoupon userCoupon = this.userCouponRepository.findFirstByUserIdAndCouponId(uid, couponId)
+            UserCoupon userCoupon = this.userCouponRepository.findFirstByUserIdAndCouponIdAndStatus(uid, couponId, 1)
                     .orElseThrow(()->new NotFoundException(50006));
             couponChecker = new CouponChecker(coupon, iMoneyDiscount);
         }
@@ -98,6 +104,8 @@ public class OrderServiceImpl implements OrderService {
      * @param orderChecker
      * @return
      */
+    @Transactional
+    @Override
     public Long placeOrder(Long uid, OrderDTO orderDTO, OrderChecker orderChecker) {
         //1、创建订单
         //1.1  生成随机订单号
@@ -118,9 +126,10 @@ public class OrderServiceImpl implements OrderService {
         this.orderRepository.save(order);
 
         //2、减库存 reduceStock
+        reduceStock(orderChecker);
 
         //3、核销优惠券
-
+        writeOffCoupon(orderDTO.getCouponId(), order.getId(), uid);
         //4、数据加入到延迟消息队列（通知优惠券和商品库存的归还）
 
         return order.getId();
@@ -135,7 +144,25 @@ public class OrderServiceImpl implements OrderService {
         //遍历对每个sku进行减库存
         for (OrderSku orderSku : orderSkuList) {
             //防止扣库存出现负数情况
-
+            int result = this.skuRepository.reduceStock(orderSku.getId(), orderSku.getCount());
+            if (result  != 1){
+                throw new ParameterException(50003);
+            }
         }
     }
+
+    /**
+     * 核销优惠券
+     * @param couponId 优惠券ID
+     * @param oid 订单id
+     * @param uid 用户id
+     */
+    private void writeOffCoupon(Long couponId, Long oid, Long uid){
+        int result = this.userCouponRepository.writeOff(couponId, oid, uid);
+        if (result != 1){
+            throw new ParameterException(50003);
+        }
+    }
+
+
 }

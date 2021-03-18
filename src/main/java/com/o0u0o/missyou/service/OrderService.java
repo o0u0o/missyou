@@ -27,9 +27,9 @@ public interface OrderService {
      * 下单
      * @param uid
      * @param orderDTO
-     * @param couponChecker
+     * @param orderChecker
      * @return
      */
-    public Long placeOrder(Long uid, OrderDTO orderDTO, CouponChecker couponChecker);
+    public Long placeOrder(Long uid, OrderDTO orderDTO, OrderChecker orderChecker);
 
 }
