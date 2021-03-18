@@ -2,6 +2,7 @@ package com.o0u0o.missyou.service.impl;
 
 import com.o0u0o.missyou.common.utils.OrderUtil;
 import com.o0u0o.missyou.core.enumeration.OrderStatus;
+import com.o0u0o.missyou.core.exception.http.ForbiddenException;
 import com.o0u0o.missyou.core.exception.http.NotFoundException;
 import com.o0u0o.missyou.core.exception.http.ParameterException;
 import com.o0u0o.missyou.core.money.IMoneyDiscount;
@@ -128,8 +129,11 @@ public class OrderServiceImpl implements OrderService {
         //2、减库存 reduceStock
         reduceStock(orderChecker);
 
-        //3、核销优惠券
-        writeOffCoupon(orderDTO.getCouponId(), order.getId(), uid);
+        //3、如果有使用优惠券，则核销优惠券
+        if (orderDTO.getCouponId() != null){
+            writeOffCoupon(orderDTO.getCouponId(), order.getId(), uid);
+        }
+
         //4、数据加入到延迟消息队列（通知优惠券和商品库存的归还）
 
         return order.getId();
@@ -160,7 +164,7 @@ public class OrderServiceImpl implements OrderService {
     private void writeOffCoupon(Long couponId, Long oid, Long uid){
         int result = this.userCouponRepository.writeOff(couponId, oid, uid);
         if (result != 1){
-            throw new ParameterException(50003);
+            throw new ForbiddenException(40012);
         }
     }
 
