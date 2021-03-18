@@ -1,5 +1,7 @@
 package com.o0u0o.missyou.service.impl;
 
+import com.o0u0o.missyou.common.utils.OrderUtil;
+import com.o0u0o.missyou.core.enumeration.OrderStatus;
 import com.o0u0o.missyou.core.exception.http.NotFoundException;
 import com.o0u0o.missyou.core.exception.http.ParameterException;
 import com.o0u0o.missyou.core.money.IMoneyDiscount;
@@ -7,10 +9,9 @@ import com.o0u0o.missyou.dto.OrderDTO;
 import com.o0u0o.missyou.dto.SkuInfoDTO;
 import com.o0u0o.missyou.logic.CouponChecker;
 import com.o0u0o.missyou.logic.OrderChecker;
-import com.o0u0o.missyou.model.Coupon;
-import com.o0u0o.missyou.model.Sku;
-import com.o0u0o.missyou.model.UserCoupon;
+import com.o0u0o.missyou.model.*;
 import com.o0u0o.missyou.repository.CouponRepository;
+import com.o0u0o.missyou.repository.OrderRepository;
 import com.o0u0o.missyou.repository.UserCouponRepository;
 import com.o0u0o.missyou.service.OrderService;
 import com.o0u0o.missyou.service.SkuService;
@@ -20,7 +21,6 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -42,6 +42,9 @@ public class OrderServiceImpl implements OrderService {
 
     @Autowired
     private UserCouponRepository userCouponRepository;
+
+    @Autowired
+    private OrderRepository orderRepository;
 
     @Autowired
     private IMoneyDiscount iMoneyDiscount;
@@ -85,5 +88,54 @@ public class OrderServiceImpl implements OrderService {
         OrderChecker orderChecker = new OrderChecker(orderDTO, skuList, couponChecker, this.maxSkuLimit);
         orderChecker.isOk();
         return orderChecker;
+    }
+
+
+    /**
+     * 下订单
+     * @param uid 用户id
+     * @param orderDTO 订单DTO
+     * @param orderChecker
+     * @return
+     */
+    public Long placeOrder(Long uid, OrderDTO orderDTO, OrderChecker orderChecker) {
+        //1、创建订单
+        //1.1  生成随机订单号
+        String orderNo = OrderUtil.makeOrderNo();
+        Order order = Order.builder()
+                .orderNo(orderNo)
+                .totalPrice(orderDTO.getTotalPrice())
+                .finalTotalPrice(orderDTO.getFinalTotalPrice())
+                .userId(uid)
+                .totalCount(orderChecker.getTotalCount().longValue())
+                .snapImg(orderChecker.getLeaderImg())
+                .snapTitle(orderChecker.getLeaderTitle())
+                .status(OrderStatus.UNPAID.value())
+                .build();
+        order.setSnapAddress(orderDTO.getAddress());
+        order.setSnapItems(orderChecker.getOrderSkuList());
+        //1.2 写入数据库
+        this.orderRepository.save(order);
+
+        //2、减库存 reduceStock
+
+        //3、核销优惠券
+
+        //4、数据加入到延迟消息队列（通知优惠券和商品库存的归还）
+
+        return order.getId();
+    }
+
+    /**
+     * 减库存（乐观锁思想）
+     * @param orderChecker
+     */
+    private void reduceStock(OrderChecker orderChecker){
+        List<OrderSku> orderSkuList = orderChecker.getOrderSkuList();
+        //遍历对每个sku进行减库存
+        for (OrderSku orderSku : orderSkuList) {
+            //防止扣库存出现负数情况
+
+        }
     }
 }

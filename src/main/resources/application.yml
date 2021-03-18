@@ -17,6 +17,7 @@ spring:
 # 指定api 是所有controller的根包
 missyou:
   api-package: com.o0u0o.missyou.api
+  year-codes: A,B,C,D,E,F,G,H,I,J,K,L,M,N
 
 # 微信相关配置
 wx:

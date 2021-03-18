@@ -2,6 +2,7 @@ package com.o0u0o.missyou.service;
 
 
 import com.o0u0o.missyou.dto.OrderDTO;
+import com.o0u0o.missyou.logic.CouponChecker;
 import com.o0u0o.missyou.logic.OrderChecker;
 
 /**
@@ -21,5 +22,14 @@ public interface OrderService {
      * @return
      */
     public OrderChecker isOk(Long uid, OrderDTO orderDTO);
+
+    /**
+     * 下单
+     * @param uid
+     * @param orderDTO
+     * @param couponChecker
+     * @return
+     */
+    public Long placeOrder(Long uid, OrderDTO orderDTO, CouponChecker couponChecker);
 
 }

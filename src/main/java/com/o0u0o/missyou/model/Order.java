@@ -1,8 +1,11 @@
 package com.o0u0o.missyou.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.o0u0o.missyou.common.utils.GenericAndJson;
 import com.o0u0o.missyou.core.enumeration.OrderStatus;
 import com.o0u0o.missyou.common.utils.CommonUtil;
+import com.o0u0o.missyou.dto.OrderAddressDTO;
 import lombok.*;
 import org.hibernate.annotations.Where;
 
@@ -13,6 +16,7 @@ import javax.persistence.Table;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 import static javax.persistence.GenerationType.IDENTITY;
 
@@ -32,9 +36,10 @@ import static javax.persistence.GenerationType.IDENTITY;
 public class Order extends BaseEntity {
     @Id
     @GeneratedValue(strategy = IDENTITY)
+    /** 自增的数字类型的id 性能好 */
     private Long id;
 
-    /** 订单号 */
+    /** 订单号（两个订单号有助于以后分库分表） */
     private String orderNo;
 
     /** 当前订单所属用户id */
@@ -88,34 +93,32 @@ public class Order extends BaseEntity {
 //        return false;
 //    }
 //
-//    //
-//    public void setSnapItems(List<OrderSku> orderSkuList) {
-//        if (orderSkuList.isEmpty()) {
-//            return;
-//        }
-//        this.snapItems = GenericAndJson.objectToJson(orderSkuList);
-//    }
-//
-//    public List<OrderSku> getSnapItems() {
-//        List<OrderSku> list = GenericAndJson.jsonToObject(this.snapItems,
-//                new TypeReference<List<OrderSku>>() {
-//                });
-//        return list;
-//    }
-//
-//
-//    public OrderAddressDTO getSnapAddress() {
-//        if (this.snapAddress == null) {
-//            return null;
-//        }
-//        OrderAddressDTO o = GenericAndJson.jsonToObject(this.snapAddress,
-//                new TypeReference<OrderAddressDTO>() {
-//                });
-//        return o;
-//    }
-//
-//    public void setSnapAddress(OrderAddressDTO address) {
-//        this.snapAddress = GenericAndJson.objectToJson(address);
-//    }
+
+    public void setSnapItems(List<OrderSku> orderSkuList) {
+        if (orderSkuList.isEmpty()) {
+            return;
+        }
+        this.snapItems = GenericAndJson.objectToJson(orderSkuList);
+    }
+
+    public List<OrderSku> getSnapItems() {
+        List<OrderSku> list = GenericAndJson.jsonToObject(this.snapItems,
+                new TypeReference<List<OrderSku>>() {
+                });
+        return list;
+    }
+
+
+    public OrderAddressDTO getSnapAddress() {
+        if (this.snapAddress == null) {
+            return null;
+        }
+        OrderAddressDTO o = GenericAndJson.jsonToObject(this.snapAddress, new TypeReference<OrderAddressDTO>() {});
+        return o;
+    }
+
+    public void setSnapAddress(OrderAddressDTO address) {
+        this.snapAddress = GenericAndJson.objectToJson(address);
+    }
 
 }
