@@ -18,6 +18,13 @@ missyou:
     jwt-key: 2333333yue
     # 令牌过期时间
     token-expried-in: 86400000
-  #下订单的最大购买数量不能超过777
+  # 订单
   order:
+    # 下订单的最大购买数量不能超过777
     max-sku-limit: 777
+    # 支付超时时间
+    pay-time-limit: 3600
+    # 支付回调地址
+    pay-callback-host: http://www.o0u0o.com
+    # 回调路径
+    pay-callback-path:  /v1/payment/wx/notify

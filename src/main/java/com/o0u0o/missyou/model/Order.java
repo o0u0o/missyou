@@ -18,7 +18,7 @@ import static javax.persistence.GenerationType.IDENTITY;
 
 /**
  * 订单
- * @author mac
+ * @author o0u0o
  * @date 2020/12/16 3:03 下午
  */
 @Entity
@@ -56,6 +56,7 @@ public class Order extends BaseEntity {
 
     private Date placedTime;
 
+    /** 当前订单所有要购买的信息 */
     private String snapItems;
 
     /** 用户收货地址快照 */

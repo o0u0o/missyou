@@ -1,13 +1,18 @@
 package com.o0u0o.missyou.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.o0u0o.missyou.common.utils.GenericAndJson;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * @ClassName Sku
@@ -55,8 +60,8 @@ public class Sku extends BaseEntity{
     private String specs;
 
     /** 转换器 */
-    @Convert(converter = MapAndJson.class)
-    private Map<String, Object> test;
+//    @Convert(converter = MapAndJson.class)
+//    private Map<String, Object> test;
 
     /** SKU的唯一标识 用于简化前端计算 */
     private String code;
@@ -69,8 +74,24 @@ public class Sku extends BaseEntity{
         return discountPrice == null ? this.price : this.discountPrice;
     }
 
-//    public List<Spec> getSpecs(){
-//        String specs = this.specs;
-//        return null;
-//    }
+    public List<Spec> getSpecs(){
+        if (this.specs == null){
+            return Collections.emptyList();
+        }
+        return GenericAndJson.jsonToObject(this.specs, new TypeReference<List<Spec>>() {});
+    }
+
+    public void setSpecs(List<Spec> specs){
+        if (specs.isEmpty()){
+            return;
+        }
+        this.specs = GenericAndJson.objectToJson(specs);
+    }
+
+    @JsonIgnore
+    public List<String> getSpecValueList(){
+        return this.getSpecs().stream()
+                .map(Spec::getValue)
+                .collect(Collectors.toList());
+    }
 }
