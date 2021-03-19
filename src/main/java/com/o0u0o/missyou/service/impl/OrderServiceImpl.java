@@ -23,11 +23,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.awt.print.Pageable;
 import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.Date;
@@ -162,9 +162,9 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Page<Order> getUnpaid(Integer page, Integer size) {
         //更新订单创建时间倒序排列
-        Pageable pageable = (Pageable) PageRequest.of(page, size, Sort.by("createTime").descending());
+        Pageable pageable = PageRequest.of(page, size, Sort.by("createTime").descending());
         Long uid = LocalUser.getUser().getId();
-        return this.orderRepository.findByStatusAndUserIdAndExpiredTimeGreaterThan(new Date(), OrderStatus.UNPAID.value(), uid, pageable);
+        return this.orderRepository.findByExpiredTimeGreaterThanAndStatusAndUserId(new Date(), OrderStatus.UNPAID.value(), uid, pageable);
     }
 
     /**

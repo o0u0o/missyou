@@ -2,10 +2,10 @@ package com.o0u0o.missyou.repository;
 
 import com.o0u0o.missyou.model.Order;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.awt.print.Pageable;
 import java.util.Date;
 
 /**
@@ -26,6 +26,5 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
      * @param uid 用户id
      * @param pageable 分页参数
      */
-    Page<Order> findByStatusAndUserIdAndExpiredTimeGreaterThan(Date now, Integer status, Long uid, Pageable pageable);
-
+    Page<Order> findByExpiredTimeGreaterThanAndStatusAndUserId(Date now, Integer status, Long uid, Pageable pageable);
 }
