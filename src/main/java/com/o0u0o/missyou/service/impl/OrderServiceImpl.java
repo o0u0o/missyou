@@ -32,6 +32,7 @@ import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -165,6 +166,35 @@ public class OrderServiceImpl implements OrderService {
         Pageable pageable = PageRequest.of(page, size, Sort.by("createTime").descending());
         Long uid = LocalUser.getUser().getId();
         return this.orderRepository.findByExpiredTimeGreaterThanAndStatusAndUserId(new Date(), OrderStatus.UNPAID.value(), uid, pageable);
+    }
+
+    /**
+     * 根据订单状态查询不同类型的订单
+     * @param status 订单状态
+     * @param page 第几页
+     * @param size 每页大小
+     * @return
+     */
+    @Override
+    public Page<Order> getByStatus(Integer status, Integer page, Integer size) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by("createTime").descending());
+        Long uid = LocalUser.getUser().getId();
+        if (status ==  OrderStatus.All.value()){
+            return this.orderRepository.findByUserId(uid, pageable);
+        }
+        //不是查询全部的
+        return this.orderRepository.findByUserIdAndStatus(uid, status, pageable);
+    }
+
+    /**
+     * 查询订单详情
+     * @param oid 订单id
+     * @return
+     */
+    @Override
+    public Optional<Order> getOrderDetail(Long oid) {
+        Long uid = LocalUser.getUser().getId();
+        return this.orderRepository.findFirstByUserIdAndId(uid, oid);
     }
 
     /**

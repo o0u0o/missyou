@@ -7,6 +7,8 @@ import com.o0u0o.missyou.logic.OrderChecker;
 import com.o0u0o.missyou.model.Order;
 import org.springframework.data.domain.Page;
 
+import java.util.Optional;
+
 /**
  * @ClassName OrderService
  * @Author o0u0o
@@ -40,5 +42,21 @@ public interface OrderService {
      * @param size
      */
     public Page<Order> getUnpaid(Integer page, Integer size);
+
+    /**
+     * 根据订单状态来查询不同类型的订单
+     * @param status
+     * @param page
+     * @param size
+     * @return
+     */
+    public Page<Order> getByStatus(Integer status,Integer page, Integer size);
+
+    /**
+     * 查询订单详情
+     * @param oid 订单id
+     * @return
+     */
+    public Optional<Order> getOrderDetail(Long oid);
 
 }

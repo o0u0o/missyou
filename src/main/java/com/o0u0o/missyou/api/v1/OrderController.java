@@ -4,13 +4,14 @@ package com.o0u0o.missyou.api.v1;
 import com.o0u0o.missyou.bo.PageCounter;
 import com.o0u0o.missyou.common.utils.CommonUtil;
 import com.o0u0o.missyou.core.LocalUser;
+import com.o0u0o.missyou.core.exception.http.NotFoundException;
 import com.o0u0o.missyou.core.interceptors.annotation.ScopeLevel;
 import com.o0u0o.missyou.dto.OrderDTO;
-import com.o0u0o.missyou.logic.CouponChecker;
 import com.o0u0o.missyou.logic.OrderChecker;
 import com.o0u0o.missyou.model.Order;
 import com.o0u0o.missyou.service.OrderService;
 import com.o0u0o.missyou.vo.OrderIdVO;
+import com.o0u0o.missyou.vo.OrderPureVO;
 import com.o0u0o.missyou.vo.OrderSimplifyVO;
 import com.o0u0o.missyou.vo.PagingDozer;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Optional;
 
 /**
  * @ClassName OrderController
@@ -76,5 +79,42 @@ public class OrderController {
                 .stream()
                 .forEach((o) -> ((OrderSimplifyVO)o).setPeriod(this.payTimeLimit));
         return pagingDozer;
+    }
+
+    /**
+     * 根据状态查询订单
+     * @param status
+     * @param start
+     * @param count
+     * @return
+     */
+    @ScopeLevel
+    @GetMapping("/by/status/{status}}")
+    public PagingDozer getByStatus(@PathVariable int status,
+                                   @RequestParam(defaultValue = "0") Integer start,
+                                   @RequestParam(defaultValue = "10") Integer count){
+        PageCounter page = CommonUtil.convertToPageParameter(start, count);
+        Page<Order> orderPage = this.orderService.getByStatus(status, page.getPage(), page.getCount());
+        PagingDozer<Order, OrderSimplifyVO> pagingDozer = new PagingDozer<>(orderPage, OrderSimplifyVO.class);
+        //循环进行赋值
+        pagingDozer.getItems()
+                .stream()
+                .forEach((o) -> ((OrderSimplifyVO)o).setPeriod(this.payTimeLimit));
+        return pagingDozer;
+    }
+
+    /**
+     * 订单详情
+     * @param oid 订单id
+     * @return
+     */
+    @ScopeLevel
+    @GetMapping("/detail/{id}")
+    public OrderPureVO getOrderDetail(@PathVariable(name = "id") Long oid){
+        Optional<Order> orderOptional = this.orderService.getOrderDetail(oid);
+        return orderOptional.map((o) -> new OrderPureVO(o, payTimeLimit))
+                .orElseThrow(() -> {
+                    throw new NotFoundException(50009);
+                });
     }
 }

@@ -8,6 +8,7 @@ spring:
       ddl-auto: update
   jackson:
     property-naming-strategy: SNAKE_CASE
+    #以时间戳的方式返回给前端
     serialization:
       WRITE_DATES_AS_TIMESTAMPS: true
 

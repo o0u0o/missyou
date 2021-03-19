@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.Date;
+import java.util.Optional;
 
 /**
  * @ClassName OrderRepository
@@ -27,4 +28,30 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
      * @param pageable 分页参数
      */
     Page<Order> findByExpiredTimeGreaterThanAndStatusAndUserId(Date now, Integer status, Long uid, Pageable pageable);
+
+    /**
+     * 根据用户id查询
+     * @param uid 用户id
+     * @param pageable 分页对象
+     * @return
+     */
+    Page<Order> findByUserId(Long uid, Pageable pageable);
+
+    /**
+     * 根据用户id和状态值查询
+     * @param uid 用户id
+     * @param status 订单状态
+     * @param pageable 分页对象
+     * @return
+     */
+    Page<Order> findByUserIdAndStatus(Long uid, Integer status, Pageable pageable);
+
+    /**
+     * 根据用户id和订单id查询
+     * @param uid 用户id
+     * @param oid 订单id
+     * @return
+     */
+    Optional<Order> findFirstByUserIdAndId(Long uid, Long oid);
+
 }
