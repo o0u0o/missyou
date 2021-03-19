@@ -113,8 +113,6 @@ public class OrderController {
     public OrderPureVO getOrderDetail(@PathVariable(name = "id") Long oid){
         Optional<Order> orderOptional = this.orderService.getOrderDetail(oid);
         return orderOptional.map((o) -> new OrderPureVO(o, payTimeLimit))
-                .orElseThrow(() -> {
-                    throw new NotFoundException(50009);
-                });
+                .orElseThrow(() -> new NotFoundException(50009));
     }
 }
