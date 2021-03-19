@@ -4,6 +4,8 @@ package com.o0u0o.missyou.service;
 import com.o0u0o.missyou.dto.OrderDTO;
 import com.o0u0o.missyou.logic.CouponChecker;
 import com.o0u0o.missyou.logic.OrderChecker;
+import com.o0u0o.missyou.model.Order;
+import org.springframework.data.domain.Page;
 
 /**
  * @ClassName OrderService
@@ -31,5 +33,12 @@ public interface OrderService {
      * @return
      */
     public Long placeOrder(Long uid, OrderDTO orderDTO, OrderChecker orderChecker);
+
+    /**
+     * 待支付订单
+     * @param page
+     * @param size
+     */
+    public Page<Order> getUnpaid(Integer page, Integer size);
 
 }

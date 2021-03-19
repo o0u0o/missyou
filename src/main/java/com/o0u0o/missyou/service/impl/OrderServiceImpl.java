@@ -2,6 +2,7 @@ package com.o0u0o.missyou.service.impl;
 
 import com.o0u0o.missyou.common.utils.CommonUtil;
 import com.o0u0o.missyou.common.utils.OrderUtil;
+import com.o0u0o.missyou.core.LocalUser;
 import com.o0u0o.missyou.core.enumeration.OrderStatus;
 import com.o0u0o.missyou.core.exception.http.ForbiddenException;
 import com.o0u0o.missyou.core.exception.http.NotFoundException;
@@ -20,10 +21,13 @@ import com.o0u0o.missyou.service.OrderService;
 import com.o0u0o.missyou.service.SkuService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
 
 import javax.transaction.Transactional;
+import java.awt.print.Pageable;
 import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.Date;
@@ -148,6 +152,19 @@ public class OrderServiceImpl implements OrderService {
         //4、数据加入到延迟消息队列（通知优惠券和商品库存的归还）
 
         return order.getId();
+    }
+
+    /**
+     * 待支付订单
+     * @param page
+     * @param size
+     */
+    @Override
+    public Page<Order> getUnpaid(Integer page, Integer size) {
+        //更新订单创建时间倒序排列
+        Pageable pageable = (Pageable) PageRequest.of(page, size, Sort.by("createTime").descending());
+        Long uid = LocalUser.getUser().getId();
+        return this.orderRepository.findByStatusAndUserIdAndExpiredTimeGreaterThan(new Date(), OrderStatus.UNPAID.value(), uid, pageable);
     }
 
     /**
