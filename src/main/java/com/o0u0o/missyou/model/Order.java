@@ -76,25 +76,30 @@ public class Order extends BaseEntity {
     private BigDecimal finalTotalPrice;
 
     private Integer status;
-//
-//    //充血模式 贫血模式
-//    @JsonIgnore
-//    public OrderStatus getStatusEnum() {
-//        return OrderStatus.toType(this.status);
-//    }
-//
-//    //
-//    public Boolean needCancel() {
-//        if (!this.getStatusEnum().equals(OrderStatus.UNPAID)) {
-//            return true;
-//        }
-//        boolean isOutOfDate = CommonUtil.isOutOfDate(this.getExpiredTime());
-//        if (isOutOfDate) {
-//            return true;
-//        }
-//        return false;
-//    }
-//
+
+    //充血模式(模型层写业务代码) 贫血模式(模型层不写任何业务代码)
+    @JsonIgnore
+    public OrderStatus getStatusEnum() {
+        return OrderStatus.toType(this.status);
+    }
+
+    /**
+     * 该订单是否应该被取消
+     * @return
+     */
+    public Boolean needCancel() {
+        //订单状态为未支付
+        if (!this.getStatusEnum().equals(OrderStatus.UNPAID)) {
+            return true;
+        }
+        //判断是否过期
+        boolean isOutOfDate = CommonUtil.isOutOfDate(this.getExpiredTime());
+        if (isOutOfDate) {
+            return true;
+        }
+        return false;
+    }
+
 
     public void setSnapItems(List<OrderSku> orderSkuList) {
         if (orderSkuList.isEmpty()) {

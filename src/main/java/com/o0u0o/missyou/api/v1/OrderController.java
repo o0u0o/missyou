@@ -89,7 +89,7 @@ public class OrderController {
      * @return
      */
     @ScopeLevel
-    @GetMapping("/by/status/{status}}")
+    @GetMapping("/by/status/{status}")
     public PagingDozer getByStatus(@PathVariable int status,
                                    @RequestParam(defaultValue = "0") Integer start,
                                    @RequestParam(defaultValue = "10") Integer count){

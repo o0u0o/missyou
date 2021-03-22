@@ -58,4 +58,34 @@ public class CommonUtil {
         }
         return false;
     }
+
+    /**
+     * 是否已经过期
+     * @param startTime 开始时间
+     * @return period 过期秒数(单位：秒)
+     */
+    public static Boolean isOutOfDate(Date startTime, Long period){
+        Long now = Calendar.getInstance().getTimeInMillis();
+        Long startTimeStamp = startTime.getTime();
+        //转换成毫秒
+        Long periodMillSecond = period * 1000;
+        if (now > (startTimeStamp + periodMillSecond)){
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * 是否已经过期
+     * @param expiredTime 过期时间
+     * @return
+     */
+    public static Boolean isOutOfDate(Date expiredTime){
+        Long now = Calendar.getInstance().getTimeInMillis();
+        Long expiredTimeTime = expiredTime.getTime();
+        if (now > expiredTimeTime){
+            return true;
+        }
+        return false;
+    }
 }
