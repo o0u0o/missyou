@@ -1,6 +1,7 @@
 package com.o0u0o.missyou.service.impl;
 
 import com.o0u0o.missyou.core.LocalUser;
+import com.o0u0o.missyou.core.exception.http.ForbiddenException;
 import com.o0u0o.missyou.core.exception.http.NotFoundException;
 import com.o0u0o.missyou.model.Order;
 import com.o0u0o.missyou.repository.OrderRepository;
@@ -38,7 +39,10 @@ public class WxPaymentServiceImpl implements WxPaymentService {
         Long uid = LocalUser.getUser().getId();
         Optional<Order> optionalOrder = this.orderRepository.findFirstByUserIdAndId(uid, oid);
         Order order = optionalOrder.orElseThrow(() -> new NotFoundException(50009));
-        
+        if(order.needCancel()){
+            throw new ForbiddenException(50010);
+        }
+        //2、调用微信服务器
         return null;
     }
 }
