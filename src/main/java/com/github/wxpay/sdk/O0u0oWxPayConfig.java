@@ -11,30 +11,30 @@ public class O0u0oWxPayConfig extends WXPayConfig {
 
     /**  小程序APPID */
     @Override
-    String getAppID() {
-        return null;
+    public String getAppID() {
+        return "wx";
     }
 
     /** 商户号 */
     @Override
-    String getMchID() {
+    public String getMchID() {
         return null;
     }
 
     /** 商户号秘钥 */
     @Override
-    String getKey() {
+    public String getKey() {
         return null;
     }
 
     /** 商户证书内容 */
     @Override
-    InputStream getCertStream() {
+    public InputStream getCertStream() {
         return null;
     }
 
     @Override
-    IWXPayDomain getWXPayDomain() {
+    public IWXPayDomain getWXPayDomain() {
         return null;
     }
 
