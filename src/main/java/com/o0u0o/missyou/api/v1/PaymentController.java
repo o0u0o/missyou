@@ -6,7 +6,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import sun.net.httpserver.HttpServerImpl;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.constraints.Positive;
 import java.util.Map;
 
@@ -31,6 +34,18 @@ public class PaymentController {
     @ScopeLevel
     public Map<String, String> preWxOrder(@PathVariable(name = "id") @Positive Long oid){
 
+        return null;
+    }
+
+    /**
+     * 回调接口
+     * @param request
+     * @param response
+     * @return
+     */
+    @RequestMapping("/wx/notify")
+    public String payCallback(HttpServletRequest request, HttpServletResponse response){
+        System.out.printf("回调接口执行了");
         return null;
     }
 }
