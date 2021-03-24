@@ -4,6 +4,8 @@ import com.o0u0o.missyou.model.Order;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.Date;
@@ -53,5 +55,24 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
      * @return
      */
     Optional<Order> findFirstByUserIdAndId(Long uid, Long oid);
+
+    /**
+     * 根据订单号查询
+     * @param orderNo - 订单号
+     * @return
+     */
+    Optional<Order> findFirstByOrderNo(String orderNo);
+
+    /**
+     * 根据订单号更新订单状态
+     * @param orderNo
+     * @param status
+     * @return
+     */
+    @Modifying
+    @Query("update Order o set o.status=:status where o.orderNo=:orderNo")
+    int updateStatusByOrderNo(String orderNo, Integer status);
+
+
 
 }
