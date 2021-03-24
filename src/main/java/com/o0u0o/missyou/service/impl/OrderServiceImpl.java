@@ -198,6 +198,22 @@ public class OrderServiceImpl implements OrderService {
     }
 
     /**
+     * 更新订单的prepay_id
+     * @param orderId 订单id
+     * @param prePayId prepayId(来着微信方)
+     */
+    @Override
+    public void updateOrderPrepayId(Long orderId, String prePayId) {
+        Optional<Order> order = this.orderRepository.findById(orderId);
+        order.ifPresent(o->{
+            o.setPrepayId(prePayId);
+            this.orderRepository.save(o);
+        });
+
+        order.orElseThrow(() -> new ParameterException(10007));
+    }
+
+    /**
      * 减库存（乐观锁思想）
      * @param orderChecker
      */

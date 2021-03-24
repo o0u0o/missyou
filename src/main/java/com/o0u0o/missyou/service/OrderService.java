@@ -59,4 +59,11 @@ public interface OrderService {
      */
     public Optional<Order> getOrderDetail(Long oid);
 
+    /**
+     * 更新订单的prepay_id
+     * @param orderId 订单id
+     * @param prePayId prepayId(来着微信方)
+     */
+    public void updateOrderPrepayId(Long orderId, String prePayId);
+
 }
