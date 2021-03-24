@@ -1,6 +1,9 @@
 package com.o0u0o.missyou.api.v1;
 
 import com.o0u0o.missyou.core.interceptors.annotation.ScopeLevel;
+import com.o0u0o.missyou.lib.O0u0oWxNotify;
+import com.o0u0o.missyou.repository.UserCouponRepository;
+import com.o0u0o.missyou.service.WxPaymentNotifyService;
 import com.o0u0o.missyou.service.WxPaymentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -13,6 +16,8 @@ import sun.net.httpserver.HttpServerImpl;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.constraints.Positive;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Map;
 
 /**
@@ -30,6 +35,12 @@ public class PaymentController {
 
     @Autowired
     private WxPaymentService wxPaymentService;
+
+    @Autowired
+    private WxPaymentNotifyService wxPaymentNotifyService;
+
+    @Autowired
+    private UserCouponRepository userCouponRepository;
 
     /**
      * 微信支付
@@ -50,8 +61,23 @@ public class PaymentController {
      */
     @RequestMapping("/wx/notify")
     public String payCallback(HttpServletRequest request, HttpServletResponse response){
-        System.out.printf("回调接口执行了");
+        InputStream s;
+        try {
+            s = request.getInputStream();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return O0u0oWxNotify.fail();
+        }
 
-        return null;
+        //解析xml的数据
+        String xml;
+        xml = O0u0oWxNotify.readNotify(s);
+        try{
+            this.wxPaymentNotifyService.processPayNotify(xml);
+        }catch (Exception e){
+            return O0u0oWxNotify.fail();
+        }
+
+        return O0u0oWxNotify.success();
     }
 }
