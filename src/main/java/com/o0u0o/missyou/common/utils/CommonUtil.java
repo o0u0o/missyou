@@ -108,4 +108,16 @@ public class CommonUtil {
         p = p.multiply(new BigDecimal("100"));
         return CommonUtil.toPlain(p);
     }
+
+
+    /**
+     * 生成10位的时间戳
+     * @return
+     */
+    public static String timestamp10(){
+        //Calendar默认生成13位的时间戳
+        Long timeInMillis13 = Calendar.getInstance().getTimeInMillis();
+        String timeInMillis13Str = timeInMillis13.toString();
+        return timeInMillis13Str.substring(0, timeInMillis13Str.length()  - 3);
+    }
 }
