@@ -1,6 +1,8 @@
 package com.o0u0o.missyou.api.v1;
 
 import com.o0u0o.missyou.core.interceptors.annotation.ScopeLevel;
+import com.o0u0o.missyou.service.WxPaymentService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -26,6 +28,9 @@ import java.util.Map;
 @Validated
 public class PaymentController {
 
+    @Autowired
+    private WxPaymentService wxPaymentService;
+
     /**
      * 微信支付
      * @param oid 订单id
@@ -33,19 +38,20 @@ public class PaymentController {
     @PostMapping("/pay/order/{id}")
     @ScopeLevel
     public Map<String, String> preWxOrder(@PathVariable(name = "id") @Positive Long oid){
-
-        return null;
+        Map<String, String> miniPayParams = this.wxPaymentService.preOrder(oid);
+        return miniPayParams;
     }
 
     /**
      * 回调接口
-     * @param request
-     * @param response
+     * @param request 请求
+     * @param response 响应
      * @return
      */
     @RequestMapping("/wx/notify")
     public String payCallback(HttpServletRequest request, HttpServletResponse response){
         System.out.printf("回调接口执行了");
+
         return null;
     }
 }
