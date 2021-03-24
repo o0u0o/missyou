@@ -2,6 +2,7 @@ package com.o0u0o.missyou.common.utils;
 
 import com.o0u0o.missyou.bo.PageCounter;
 
+import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -87,5 +88,24 @@ public class CommonUtil {
             return true;
         }
         return false;
+    }
+
+    /**
+     * BigDecimal转换为String
+     * @param p
+     * @return
+     */
+    public static String toPlain(BigDecimal p){
+        return p.stripTrailingZeros().toPlainString();
+    }
+
+    /**
+     * 人民币由元向分转换（返回字符串类型）
+     * @param p
+     * @return
+     */
+    public static String yuanToFenPlainString(BigDecimal p){
+        p = p.multiply(new BigDecimal("100"));
+        return CommonUtil.toPlain(p);
     }
 }
