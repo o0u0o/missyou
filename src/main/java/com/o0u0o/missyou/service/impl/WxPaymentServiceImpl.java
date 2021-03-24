@@ -81,8 +81,9 @@ public class WxPaymentServiceImpl implements WxPaymentService {
         if (this.unifiedOrderSuccess(wxOrder)){
             this.orderService.updateOrderPrepayId(order.getId(), wxOrder.get("prepay_id"));
         }
-        //2.3
-        return null;
+
+        //2.3 返回签名
+        return this.makePaySignature(wxOrder);
     }
 
     /**
@@ -131,7 +132,7 @@ public class WxPaymentServiceImpl implements WxPaymentService {
         data.put("spbill_create_ip", HttpRequestProxy.getRemoteRealIp());
         //支持成功后回调地址（需要提供外网的IP地址）
         data.put("notify_url", payCallbackUrl);
-        return null;
+        return data;
     }
 
 
@@ -182,5 +183,19 @@ public class WxPaymentServiceImpl implements WxPaymentService {
         miniPayParams.putAll(wxPayMap);
         miniPayParams.remove("appId");
         return miniPayParams;
+    }
+
+    /**
+     * 组装微信支付配置
+     * @return
+     */
+    public WXPay assembleWxPayConfig(){
+        WXPay wxPay;
+        try {
+            wxPay = new WXPay(WxPaymentServiceImpl.o0u0oWxPayConfig);
+        } catch (Exception e){
+            throw new ServerErrorException(9999);
+        }
+        return wxPay;
     }
 }
