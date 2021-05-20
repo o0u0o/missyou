@@ -11,6 +11,13 @@ spring:
       hibernate:
         show_sql: true
         format_sql: true
+  redis:
+    localhost: localhost
+    port: 6379
+    database: 7
+    password:
+    #监听7号数据库的过期时间
+    listen-pattern: __keyevent@7__:expired
 
 missyou:
   security:

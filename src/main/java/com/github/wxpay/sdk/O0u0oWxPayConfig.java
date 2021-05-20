@@ -12,29 +12,24 @@ public class O0u0oWxPayConfig extends WXPayConfig {
     /**  小程序APPID */
     @Override
     public String getAppID() {
-        return "wx";
+        return "wxd898fcb01713c658";
     }
 
     /** 商户号 */
     @Override
     public String getMchID() {
-        return null;
+        return "1483469312";
     }
 
     /** 商户号秘钥 */
     @Override
     public String getKey() {
-        return null;
+        return "098F6BCD4621D373CADE4E832627B4F6";
     }
 
     /** 商户证书内容 */
     @Override
     public InputStream getCertStream() {
-        return null;
-    }
-
-    @Override
-    public IWXPayDomain getWXPayDomain() {
         return null;
     }
 
@@ -57,5 +52,21 @@ public class O0u0oWxPayConfig extends WXPayConfig {
     @Override
     public int getHttpReadTimeoutMs() {
         return 8*1000;
+    }
+
+    @Override
+    public IWXPayDomain getWXPayDomain(){
+        IWXPayDomain iwxPayDomain = new IWXPayDomain() {
+            @Override
+            public void report(String domain, long elapsedTimeMillis, Exception ex) {
+
+            }
+
+            @Override
+            public DomainInfo getDomain(WXPayConfig config) {
+                return new IWXPayDomain.DomainInfo(WXPayConstants.DOMAIN_API, true);
+            }
+        };
+        return iwxPayDomain;
     }
 }

@@ -25,6 +25,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -33,6 +34,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 /**
@@ -69,6 +71,9 @@ public class OrderServiceImpl implements OrderService {
 
     @Value("${missyou.order.pay-time-limit}")
     private int payTimeLimit;
+
+    @Autowired
+    private StringRedisTemplate stringRedisTemplate;
 
 
     @Override
@@ -146,13 +151,34 @@ public class OrderServiceImpl implements OrderService {
         reduceStock(orderChecker);
 
         //3、如果有使用优惠券，则核销优惠券
+        // 设置默认的优惠券id
+        Long couponId = -1L;
         if (orderDTO.getCouponId() != null){
             writeOffCoupon(orderDTO.getCouponId(), order.getId(), uid);
+            couponId = orderDTO.getCouponId();
         }
 
         //4、数据加入到延迟消息队列（通知优惠券和商品库存的归还）
-
+        this.sendToRedis(order.getId(), uid, couponId);
         return order.getId();
+    }
+
+
+    /**
+     * 发送至Redis 并设置过期时间
+     * @param iod 订单id
+     * @param uid 用户id
+     * @param couponId 优惠券id
+     */
+    private void sendToRedis(Long iod, Long uid, Long couponId){
+        String key  = iod.toString()+","+uid.toString()+","+couponId.toString();
+
+        // 关于应用程序预警，该段代码适合加入一种预警机制（如果redis宕机，可以给运维人员发送短信等）
+        try {
+            stringRedisTemplate.opsForValue().set(key, "1",  this.payTimeLimit, TimeUnit.SECONDS);
+        } catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     /**

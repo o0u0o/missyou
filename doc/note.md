@@ -1,7 +1,18 @@
+## Spring
+Spring 最大的特点是具有IOC（控制翻转）和AOP（面向切面编程）编程原则/思想，Spring简化了IOC和AOP的应用，降低了使用的难度，
+- IOC（控制翻转）：SpringBoot中 容器注入实例对象就使用了IOC的思想
+- AOP面向切面编程：过滤器和拦截器应用了IOC的思想
 
+## Java常见技术框架
+- SSH(Spring Structs2 Hibernate)
+- SSM(Spring SpringMVC Mybatis)
+
+## SpringBoot
+约定大于*配置*，
+Interface是一种抽象，因为Java提倡面向抽象/接口编程，当多个类实现了同一个Interface, 我们就需要通过xml文件配置去实例化具体要使用对象、SpringBoot实现了自动装配简化了配置
 ## Spring 与 SpringBoot
-SSM :Spring + Spring MVC + MyBatis  （Spring + Spring MVC）是一个框架
-Spring Framework = Spring + Spring MVC
+- SSM :Spring + Spring MVC + MyBatis  （Spring + Spring MVC）是一个框架
+- Spring Framework = Spring + Spring MVC
 
 ### Spring Framework 与 SpringBoot的关系
 - SpringBoot 是 Spring Framework 的应用
@@ -16,8 +27,8 @@ Spring Framework = Spring + Spring MVC
 搞清楚什么自动配置有什么作用？
 类比没有SpringBoot 如何开发的
 
-Spring Boot实现了自动配置，降低了项目搭建的复杂度。实现开箱即用
-它主要是为了解决使用Spring框架需要进行大量的配置太麻烦的问题，
+- Spring Boot实现了自动配置，降低了项目搭建的复杂度。实现开箱即用
+- 它主要是为了解决使用Spring框架需要进行大量的配置太麻烦的问题，
 所以它并不是用来替代Spring的解决方案，
 而是和Spring框架紧密结合用于提升Spring开发者体验的工具。
 同时它集成了大量常用的第三方库配置(例如Jackson, JDBC, Mongo, Redis, Mail等等)，
@@ -29,9 +40,9 @@ IOC具体实现：容器 加入容器 需要的时候通过容器注入
 抽象意义（目的）：把控制权交给用户 实现灵活的OCP原则
 
 ## 如何将对象加入容器（考虑到灵活性）？
-1、XML方式（以前常用）
-2、注解形式
-3、编程方式 + 注解
+- 1、XML方式（以前常用）
+- 2、注解形式
+- 3、编程方式 + 注解
 
 ### 注解形式
 #### Stereotype Annotations 模式注解
@@ -61,25 +72,25 @@ IOC具体实现：容器 加入容器 需要的时候通过容器注入
 
 ### bytype 是默认的注入方式
 寻找ISkill 接口实现Bean
-1、可能找不到任何一个Bean 会报错
-2、可能知道到一个 Spring回直接将之注入
-3、找到多个 并不一定报错  会按照字段的名字推断选择哪个bean 实在没找到报错
+- 1、可能找不到任何一个Bean 会报错
+- 2、可能知道到一个 Spring回直接将之注入
+- 3、找到多个 并不一定报错  会按照字段的名字推断选择哪个bean 实在没找到报错
 
 @ 主动指定要注入bean的名字
 
 ## 面向对象里对于"变化"的解决方案
-1、制定一个接口（interface）多个类实现同一个接口 - 这就是设计模式中的策略模式
-2、一个类，通过更改类的属性，解决变化            -
+- 1、制定一个接口（interface）多个类实现同一个接口 - 这就是设计模式中的策略模式
+- 2、一个类，通过更改类的属性，解决变化            -
 举例：MySQL 默认端口为3306 如果更改为3307 需要用到配置文件进行属性更改  
 3、
 
 ## @ComponentScan
 
 ## 策略模式的变化方案
-1、byname 切换 bean anne
-2、@Qualifier 注解指定bean
-3、有选择的只注入一个bean 注释掉某个bean 上的@Component注解
-4、使用 @Primary 注解（用处多） 提供bean 的优先级
+- 1、byname 切换 bean anne
+- 2、@Qualifier 注解指定bean
+- 3、有选择的只注入一个bean 注释掉某个bean 上的@Component注解
+- 4、使用 @Primary 注解（用处多） 提供bean 的优先级
     自己开发的库，有三个方法，对外提供接口
     
 # 条件注解 @Conditional

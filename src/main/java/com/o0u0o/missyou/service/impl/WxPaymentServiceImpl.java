@@ -120,14 +120,14 @@ public class WxPaymentServiceImpl implements WxPaymentService {
         //设备类型
         data.put("device_info", "Sleeve");
         //货币类型 CNY
-        data.put("free_type", "CNY");
+        data.put("fee_type", "CNY");
         //微信支付类型
         data.put("trade_type", "JSAPI");
 
         //订单的支付金额
         data.put("total_fee", CommonUtil.yuanToFenPlainString(serverFinalPrice));
         //微信的open_id
-        data.put("open_id", LocalUser.getUser().getOpenid());
+        data.put("openid", LocalUser.getUser().getOpenid());
         //当前用户的客户端的IP
         data.put("spbill_create_ip", HttpRequestProxy.getRemoteRealIp());
         //支持成功后回调地址（需要提供外网的IP地址）
