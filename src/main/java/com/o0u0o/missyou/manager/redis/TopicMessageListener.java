@@ -1,6 +1,7 @@
 package com.o0u0o.missyou.manager.redis;
 
 import com.o0u0o.missyou.bo.OrderMessageBO;
+import com.o0u0o.missyou.service.CouponBackService;
 import com.o0u0o.missyou.service.OrderCancelService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.connection.Message;
@@ -16,6 +17,9 @@ public class TopicMessageListener implements MessageListener {
 
     @Autowired
     private OrderCancelService orderCancelService;
+
+    @Autowired
+    private CouponBackService couponBackService;
 
     /**
      * 获取redis键空间通知
@@ -34,6 +38,6 @@ public class TopicMessageListener implements MessageListener {
 
         OrderMessageBO orderMessageBO = new OrderMessageBO(expiredKey);
         orderCancelService.cancel(orderMessageBO);
-
+        couponBackService.returnBack(orderMessageBO);
     }
 }

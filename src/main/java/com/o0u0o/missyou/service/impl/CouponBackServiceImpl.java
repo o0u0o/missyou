@@ -9,6 +9,7 @@ import com.o0u0o.missyou.repository.UserCouponRepository;
 import com.o0u0o.missyou.service.CouponBackService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -31,6 +32,7 @@ public class CouponBackServiceImpl implements CouponBackService {
      * @param bo
      */
     @Override
+    @Transactional
     public void returnBack(OrderMessageBO bo) {
         Long couponId = bo.getCouponId();
         Long uid = bo.getUserId();
