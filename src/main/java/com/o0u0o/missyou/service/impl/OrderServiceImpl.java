@@ -166,12 +166,12 @@ public class OrderServiceImpl implements OrderService {
 
     /**
      * 发送至Redis 并设置过期时间
-     * @param iod 订单id
+     * @param oid 订单id
      * @param uid 用户id
      * @param couponId 优惠券id
      */
-    private void sendToRedis(Long iod, Long uid, Long couponId){
-        String key  = iod.toString()+","+uid.toString()+","+couponId.toString();
+    private void sendToRedis(Long oid, Long uid, Long couponId){
+        String key  = uid.toString() + "," + oid.toString() + "," + couponId.toString();
 
         // 关于应用程序预警，该段代码适合加入一种预警机制（如果redis宕机，可以给运维人员发送短信等）
         try {

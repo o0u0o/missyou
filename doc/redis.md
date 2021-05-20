@@ -7,9 +7,9 @@
 
 ### 键空间通知的2种类型
 用具监听某写时间
-- key-space
+- 1、key-space
   比如我们在redis set一个key为zhangsan 当我们del zhangsan 就会返回时间的名称
-- key-event
+- 2、key-event
   返回时间的名字
   
 在业务中我们可以监听一些事件，比如删除、过期(x)，对redis列表(l)的操作，对集合(l)的操作等等

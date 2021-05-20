@@ -65,14 +65,21 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
 
     /**
      * 根据订单号更新订单状态
-     * @param orderNo
-     * @param status
+     * @param orderNo 订单号
+     * @param status 状态
      * @return
      */
     @Modifying
     @Query("update Order o set o.status=:status where o.orderNo=:orderNo")
     int updateStatusByOrderNo(String orderNo, Integer status);
 
-
+    /**
+     * 取消订单
+     * @param oid 订单号
+     * @return
+     */
+    @Modifying
+    @Query("update Order o set o.status = 5 where o.status = 1 and o.id =:oid")
+    int cancelOrder(Long oid);
 
 }
