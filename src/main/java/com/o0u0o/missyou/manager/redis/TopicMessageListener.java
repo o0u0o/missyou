@@ -37,7 +37,9 @@ public class TopicMessageListener implements MessageListener {
         String topic = new String(channel);
 
         OrderMessageBO orderMessageBO = new OrderMessageBO(expiredKey);
+        //取消订单
         orderCancelService.cancel(orderMessageBO);
+        //归还优惠券
         couponBackService.returnBack(orderMessageBO);
     }
 }

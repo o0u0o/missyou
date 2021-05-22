@@ -50,8 +50,8 @@ public class ProducerSchedule {
 
     /**
      * 发送消息队列
-     * @param topic
-     * @param messageText
+     * @param topic 主题
+     * @param messageText 消息文本
      * @return
      */
     public String send(String topic, String messageText) throws Exception{
@@ -60,7 +60,7 @@ public class ProducerSchedule {
         message.setDelayTimeLevel(4);
 
         SendResult result = this.producer.send(message);
-        System.out.println(result.getMsgId() +" "+ result.getSendStatus());
+        System.out.println("消息ID：" + result.getMsgId() +" 发送状态:"+ result.getSendStatus());
 
         return result.getMsgId();
     }
