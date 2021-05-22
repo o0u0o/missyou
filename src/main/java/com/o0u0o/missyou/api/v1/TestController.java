@@ -26,4 +26,11 @@ public class TestController {
     public void getDetail(Test test){
         System.out.println(this.test);
     }
+
+    /**
+     * 发布消息到mq
+     */
+    public void pushMessageToMQ(){
+
+    }
 }

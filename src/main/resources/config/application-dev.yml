@@ -19,6 +19,11 @@ spring:
     #监听7号数据库的过期时间
     listen-pattern: __keyevent@7__:expired
 
+rocketmq:
+  producer:
+    producer-group: SleeveProducerGroup
+  namesrv-addr: 127.0.0.1:9876
+
 missyou:
   security:
     # 盐
