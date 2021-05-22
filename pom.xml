@@ -109,6 +109,13 @@
             <version>1.7.21</version>
         </dependency>
 
+        <!-- rocketmq依赖 -->
+        <dependency>
+            <groupId>org.apache.rocketmq</groupId>
+            <artifactId>rocketmq-client</artifactId>
+            <version>4.8.0</version>
+        </dependency>
+
 
         <!-- GraphQL 依赖  -->
         <dependency>

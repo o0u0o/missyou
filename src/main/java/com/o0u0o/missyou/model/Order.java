@@ -75,6 +75,7 @@ public class Order extends BaseEntity {
     /** 这笔订单最终价格（扣除优惠券之后的实际价格） */
     private BigDecimal finalTotalPrice;
 
+    /** 订单状态 */
     private Integer status;
 
     //充血模式(模型层写业务代码) 贫血模式(模型层不写任何业务代码)
