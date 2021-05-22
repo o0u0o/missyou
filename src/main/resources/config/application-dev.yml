@@ -20,6 +20,8 @@ spring:
     listen-pattern: __keyevent@7__:expired
 
 rocketmq:
+  consumer:
+    consumer-group: SleeveConsumerGroup
   producer:
     producer-group: SleeveProducerGroup
   namesrv-addr: 127.0.0.1:9876

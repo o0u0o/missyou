@@ -1,5 +1,6 @@
 package com.o0u0o.missyou.api.v1;
 
+import com.o0u0o.missyou.manager.rocketmq.ProducerSchedule;
 import com.o0u0o.missyou.simple.Test;
 import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,9 @@ public class TestController {
     @Autowired
     private ObjectFactory<Test> test;
 
+    @Autowired
+    private ProducerSchedule producerSchedule;
+
     @GetMapping("")
     public void getDetail(Test test){
         System.out.println(this.test);
@@ -30,7 +34,12 @@ public class TestController {
     /**
      * 发布消息到mq
      */
+    @GetMapping("/push")
     public void pushMessageToMQ(){
-
+        try {
+            producerSchedule.send("TopicTest", "test");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

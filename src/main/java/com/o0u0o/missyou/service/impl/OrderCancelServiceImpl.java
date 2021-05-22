@@ -45,9 +45,7 @@ public class OrderCancelServiceImpl implements OrderCancelService {
      */
     private void cancel(Long oid){
         Optional<Order> orderOptional = orderRepository.findById(oid);
-        Order order = orderOptional.orElseThrow(() -> {
-            throw new ServerErrorException(9999);
-        });
+        Order order = orderOptional.orElseThrow(() -> new ServerErrorException(9999));
         //订单改为已取消状态
         int res = orderRepository.cancelOrder(oid);
         if (res != 1){

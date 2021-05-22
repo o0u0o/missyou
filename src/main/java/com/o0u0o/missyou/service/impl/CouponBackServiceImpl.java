@@ -45,9 +45,7 @@ public class CouponBackServiceImpl implements CouponBackService {
 
         //使用了优惠券，就需进行归还操作
         Optional<Order> optional = orderRepository.findFirstByUserIdAndId(uid, orderId);
-        Order order = optional.orElseThrow(() -> {
-            throw new ServerErrorException(9999);
-        });
+        Order order = optional.orElseThrow(() -> new ServerErrorException(9999));
 
         //如果订单状态为为支付，或者为取消，则可以退回优惠券
         if (order.getStatusEnum().equals(OrderStatus.UNPAID) ||
