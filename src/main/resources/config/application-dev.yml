@@ -24,7 +24,7 @@ rocketmq:
     consumer-group: SleeveConsumerGroup
   producer:
     producer-group: SleeveProducerGroup
-  namesrv-addr: 127.0.0.1:9876
+  namesrv-addr: 49.232.175.135:9876
 
 missyou:
   security:

@@ -97,7 +97,7 @@ public class WxAuthenticationServiceImpl implements WxAuthenticationService {
             return JwtToken.makeToken(userOptional.get().getId());
         }
 
-        //2.2 如果不存在 先新注册用户 在返回jwt令牌
+        //2.2 如果不存在 先新注册用户 再返回jwt令牌
         User user = User.builder()
                 .openid(openid)
                 .build();

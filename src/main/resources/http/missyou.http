@@ -1,0 +1,5 @@
+### 查询服务实例信息
+GET  http://127.0.0.1:8081/v1/test
+Accept: application/x-www-form-urlencoded
+
+GET http://localhost:8081/test/hi

@@ -7,11 +7,14 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.ConstraintViolationException;
 import java.util.List;
 
@@ -41,7 +44,6 @@ public class GlobalExceptionAdvice {
      * 3、对于未知异常不应该详细返回给前端(为避免泄漏代码结构且对前端没有意义) 可提示"服务器未知错误"
      * 该方法用户处理未知异常
      */
-
     @ExceptionHandler(value = Exception.class)
     @ResponseBody
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -106,6 +108,32 @@ public class GlobalExceptionAdvice {
         return new UnifyResponse(10001, e.getMessage(),method + " " + uri);
     }
 
+    /**
+     * MissingServletRequestParameterException
+     */
+    @ResponseBody
+    @ExceptionHandler({MissingServletRequestParameterException.class})
+    public UnifyResponse processException(MissingServletRequestParameterException exception,
+                                                    HttpServletRequest request,
+                                                    HttpServletResponse response) {
+
+        UnifyResponse result = new UnifyResponse();
+        result.setRequest(getSimpleRequest(request));
+
+        String errorMessage = "丢失参数";
+        if (!StringUtils.hasText(errorMessage)) {
+            result.setMessage(exception.getMessage());
+        } else {
+            result.setMessage(errorMessage + exception.getParameterName());
+        }
+        result.setCode(10030);
+        response.setStatus(HttpStatus.BAD_REQUEST.value());
+        return result;
+    }
+
+    public static String getSimpleRequest(HttpServletRequest request) {
+        return request.getMethod() + " " + request.getServletPath();
+    }
 
 
     /*************** 私有方法 ***************/

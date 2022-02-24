@@ -91,7 +91,11 @@ public class BannerController {
         //return "hello";
     }
 
-    @GetMapping("/test/{id}")
+    /**
+     * 可以设置多路径匹配
+     * @param id
+     */
+    @GetMapping(value = {"/test/{id}", "/test/{id}/{userId}"})
     public void test(@PathVariable(name = "id") Integer id){
         System.out.println(id);
         iConnect.connect();

@@ -23,11 +23,16 @@ public class UnifyResponse {
     /** 请求地址 */
     private String request;
 
+    public UnifyResponse() {
+    }
+
     public UnifyResponse(Integer code, String message, String request) {
         this.code = code;
         this.message = message;
         this.request = request;
     }
+
+
 
     public static void createSuccess(int code){
         throw new CreateSuccess(0);
